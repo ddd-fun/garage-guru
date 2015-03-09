@@ -11,7 +11,7 @@ public class ParkingApplication {
         this.parkingFacility = parkingFacility;
     }
 
-    public ParkingTicket tryToPark(VehicleId vehicleId, VehicleType vehicleType)
+    public LotLocation tryToPark(VehicleId vehicleId, VehicleType vehicleType)
             throws OutOfAvailablePlacesException{
 
         Optional<LotLocation> lotLocationSearchResult = this.parkingFacility.findVehicle(vehicleId);
@@ -23,11 +23,23 @@ public class ParkingApplication {
         Optional<LotLocation> locationSearchResult = this.parkingFacility.findSuitableLotFor(vehicleType);
         if(locationSearchResult.isPresent()){
            this.parkingFacility.tryToPark(vehicleId, vehicleType, locationSearchResult.get());
-          return new ParkingTicket(vehicleId, locationSearchResult.get());
+          return locationSearchResult.get();
         }else{
           throw new OutOfAvailablePlacesException(String.format("no more lot left suitable for %s", vehicleType));
         }
     }
+
+
+    public Optional<LotLocation> findVehicleBy(VehicleId vehicleId){
+      return this.parkingFacility.findVehicle(vehicleId);
+    }
+
+
+    public AvailableLots getAvailableLots(){
+       return this.parkingFacility.getAvailableLots();
+    }
+
+
 
 
 }

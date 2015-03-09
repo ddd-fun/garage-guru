@@ -1,7 +1,5 @@
 package org.home.gg;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -15,19 +13,19 @@ public class ParkingApplicationTest {
 
 
     @Test
-    public void whenThereIsAvailablePlaceThenTicketIsReturned() throws Exception {
+    public void whenThereIsAvailablePlaceThenParkingLotLocationIsReturned() throws Exception {
 
-        String level = "A";
-        String parkingLotId = "1";
-        String vehicleId = "AB456H";
+        VehicleId vehicleId = new VehicleId("AB465KL");
 
         ParkingApplication application = createParkingApplicationWith(
-                        anOneLevelGarage(level)
-                           .withParkingLot(parkingLotId, suitableForCarOnly()));
+                        anOneLevelGarage("A")
+                           .withParkingLot("1", suitableForCarOnly()));
 
-        assertThat("when there is a place available then parking ticked is returned with parking lot location",
-                   application.tryToPark(new VehicleId(vehicleId), VehicleType.CAR),
-                   new TicketMatcher(vehicleId, level, parkingLotId));
+        LotLocation lotLocation = application.tryToPark(vehicleId, VehicleType.CAR);
+
+        assertEquals(lotLocation, application.findVehicleBy(vehicleId).get());
+
+        assertTrue(application.getAvailableLots().isEmpty());
     }
 
 
@@ -62,39 +60,6 @@ public class ParkingApplicationTest {
       return new VehicleSpecBuilder().aCar();
     }
 
-
-    private static class TicketMatcher extends BaseMatcher<ParkingTicket>{
-
-        private final String level;
-        private final String parkingLotId;
-        private final String vehicleId;
-
-        public TicketMatcher(String vehicleId, String level, String parkingLotId) {
-            this.level = level;
-            this.parkingLotId = parkingLotId;
-            this.vehicleId = vehicleId;
-        }
-
-        @Override
-        public boolean matches(Object item) {
-            ParkingTicket ticket = (ParkingTicket) item;
-            String ticketAsString = ticket.toString();
-           return ticketAsString.contains(vehicleId) &&
-                  ticketAsString.contains(level) &&
-                  ticketAsString.contains(parkingLotId);
-        }
-
-        @Override
-        public void describeTo(Description description) {
-           description.appendText("<Parking ticket for vehicle ")
-                      .appendValue(vehicleId)
-                      .appendText(" Location: ")
-                      .appendText("level=").appendValue(level)
-                      .appendText(", ")
-                      .appendText("lot=").appendValue(parkingLotId);
-        }
-
-    }
 
 
     private GarageBuilder anOneLevelGarage(String level){

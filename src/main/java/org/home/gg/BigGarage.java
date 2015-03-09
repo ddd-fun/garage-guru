@@ -65,5 +65,8 @@ public class BigGarage implements ParkingFacility {
     }
 
 
-
+    @Override
+    public AvailableLots getAvailableLots() {
+        return new AvailableLots(this.availableSlots.size());
+    }
 }
