@@ -10,7 +10,7 @@ public class ParkingApplication {
     }
 
     public ParkingTicket tryToPark(VehicleId vehicleId, VehicleType vehicleType) throws OutOfAvailablePlacesException{
-        SpotLocation location = parkingFacility.tryToPark(vehicleId, vehicleType);
+        LotLocation location = parkingFacility.tryToPark(vehicleId, vehicleType);
        return new ParkingTicket(vehicleId, location);
     }
 

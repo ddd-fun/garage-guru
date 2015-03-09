@@ -1,18 +1,18 @@
 package org.home.gg;
 
 
-public class ParkingSpot   {
+public class ParkingLot {
 
-    private final SpotLocation location;
+    private final LotLocation location;
     private final VehicleSpec vehicleSpec;
 
-    public ParkingSpot(SpotLocation location, VehicleSpec vehicleSpec) {
+    public ParkingLot(LotLocation location, VehicleSpec vehicleSpec) {
       this.location = location;
       this.vehicleSpec = vehicleSpec;
     }
 
 
-    public SpotLocation getLocation() {
+    public LotLocation getLocation() {
       return this.location;
     }
 

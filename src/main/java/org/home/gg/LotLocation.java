@@ -1,12 +1,12 @@
 package org.home.gg;
 
 
-public class SpotLocation {
+public class LotLocation {
 
     private final String level;
     private final String place;
 
-    public SpotLocation(String level, String place) {
+    public LotLocation(String level, String place) {
         //TODO validate input
         this.level = level;
         this.place = place;
@@ -21,9 +21,9 @@ public class SpotLocation {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SpotLocation)) return false;
+        if (!(o instanceof LotLocation)) return false;
 
-        SpotLocation location = (SpotLocation) o;
+        LotLocation location = (LotLocation) o;
 
         if (!level.equals(location.level)) return false;
         if (!place.equals(location.place)) return false;

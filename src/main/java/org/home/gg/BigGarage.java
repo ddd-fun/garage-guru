@@ -5,17 +5,17 @@ import java.util.*;
 
 public class BigGarage implements ParkingFacility {
 
-    private final Set<ParkingSpot> availableSlots;
-    private final Map<VehicleId, ParkingSpot> reservedSlots;
+    private final Set<ParkingLot> availableSlots;
+    private final Map<VehicleId, ParkingLot> reservedSlots;
 
-    public BigGarage(Set<ParkingSpot> availableSlots) {
-       this.availableSlots = new HashSet<ParkingSpot>(availableSlots);
-       this.reservedSlots = new HashMap<VehicleId, ParkingSpot>(availableSlots.size());
+    public BigGarage(Set<ParkingLot> availableSlots) {
+       this.availableSlots = new HashSet<ParkingLot>(availableSlots);
+       this.reservedSlots = new HashMap<VehicleId, ParkingLot>(availableSlots.size());
     }
 
     @Override
-    public SpotLocation tryToPark(VehicleId vehicleId, VehicleType vehicleType) throws OutOfAvailablePlacesException {
-        Optional<ParkingSpot> foundSpot = findSpotFor(vehicleType);
+    public LotLocation tryToPark(VehicleId vehicleId, VehicleType vehicleType) throws OutOfAvailablePlacesException {
+        Optional<ParkingLot> foundSpot = findSpotFor(vehicleType);
         if(foundSpot.isPresent()){
             park(vehicleId, foundSpot.get());
           return foundSpot.get().getLocation();
@@ -25,13 +25,13 @@ public class BigGarage implements ParkingFacility {
     }
 
 
-    private void park(VehicleId id, ParkingSpot spot){
+    private void park(VehicleId id, ParkingLot spot){
         this.availableSlots.remove(spot);
         this.reservedSlots.put(id, spot);
     }
 
-    private Optional<ParkingSpot> findSpotFor(VehicleType vehicleType){
-        for(ParkingSpot parkingSlot : this.availableSlots){
+    private Optional<ParkingLot> findSpotFor(VehicleType vehicleType){
+        for(ParkingLot parkingSlot : this.availableSlots){
             if(parkingSlot.couldPark(vehicleType)){
                 return Optional.of(parkingSlot);
             }

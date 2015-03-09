@@ -8,7 +8,7 @@ import java.util.Stack;
 public class BigGarageBuilder {
 
     private Stack<String> levels = new Stack<String>();
-    private Set<ParkingSpot> slots = new HashSet<ParkingSpot>();
+    private Set<ParkingLot> slots = new HashSet<ParkingLot>();
 
 
     public BigGarageBuilder addLevel(String level){
@@ -24,7 +24,7 @@ public class BigGarageBuilder {
         if(this.levels.isEmpty()){
            throw new IllegalStateException("level should be defined before");
         }
-       this.slots.add(new ParkingSpot(new SpotLocation(this.levels.peek(), place), vehicleSpec));
+       this.slots.add(new ParkingLot(new LotLocation(this.levels.peek(), place), vehicleSpec));
       return this;
     }
 
