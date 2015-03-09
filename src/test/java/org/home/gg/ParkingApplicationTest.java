@@ -22,8 +22,8 @@ public class ParkingApplicationTest {
         String vehicleId = "AB456H";
 
         ParkingApplication application = createParkingApplicationWith(
-                                     anOneLevelGarage(level)
-                                     .withParkingLot(parkingLotId, suitableForCarOnly()));
+                        anOneLevelGarage(level)
+                           .withParkingLot(parkingLotId, suitableForCarOnly()));
 
         assertThat("when there is a place available then parking ticked is returned with parking lot location",
                    application.tryToPark(new VehicleId(vehicleId), VehicleType.CAR),
@@ -44,6 +44,18 @@ public class ParkingApplicationTest {
         application.tryToPark(new VehicleId(vehicleId), VehicleType.CAR);
     }
 
+
+
+    @Test(expected = OutOfAvailablePlacesException.class)
+    public void whenThereIsNoAvailablePlaceThenExceptionIsThrown() throws Exception {
+
+        ParkingApplication application = createParkingApplicationWith(
+                anOneLevelGarage("A")
+                        .withParkingLot("1", suitableForCarOnly()));
+
+        application.tryToPark(new VehicleId("AB456H"), VehicleType.CAR);
+        application.tryToPark(new VehicleId("VB356G"), VehicleType.CAR);
+    }
 
 
     private VehicleSpec suitableForCarOnly() {
@@ -89,18 +101,6 @@ public class ParkingApplicationTest {
        return new GarageBuilder().withLevel(level);
     }
 
-
-
-    @Test(expected = OutOfAvailablePlacesException.class)
-    public void whenThereIsNoAvailablePlaceThenExceptionIsThrown() throws Exception {
-
-        ParkingApplication application = createParkingApplicationWith(
-                           anOneLevelGarage("A")
-                             .withParkingLot("1", suitableForCarOnly()));
-
-        application.tryToPark(new VehicleId("AB456H"), VehicleType.CAR);
-        application.tryToPark(new VehicleId("VB356G"), VehicleType.CAR);
-    }
 
 
 }
