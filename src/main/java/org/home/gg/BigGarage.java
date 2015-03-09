@@ -14,11 +14,36 @@ public class BigGarage implements ParkingFacility {
     }
 
     @Override
-    public LotLocation tryToPark(VehicleId vehicleId, VehicleType vehicleType) throws OutOfAvailablePlacesException {
-        Optional<ParkingLot> foundSpot = findSpotFor(vehicleType);
-        if(foundSpot.isPresent()){
-            park(vehicleId, foundSpot.get());
-          return foundSpot.get().getLocation();
+    public Optional<LotLocation> findVehicle(VehicleId vehicleId) {
+       if(this.reservedSlots.containsKey(vehicleId)){
+          return Optional.of(this.reservedSlots.get(vehicleId).getLocation());
+       }else{
+         return Optional.empty();
+       }
+    }
+
+    @Override
+    public Optional<LotLocation> findSuitableLotFor(VehicleType vehicleType) {
+        for(ParkingLot aLot : this.availableSlots){
+            if(aLot.couldPark(vehicleType)){
+              return Optional.of(aLot.getLocation());
+            }
+        }
+       return Optional.empty();
+    }
+
+    @Override
+    public void tryToPark(VehicleId vehicleId, VehicleType vehicleType, LotLocation location)
+             throws OutOfAvailablePlacesException, VehicleIsAlreadyParkedException {
+
+        Optional<LotLocation> lotLocationSearchResult = findVehicle(vehicleId);
+        if(lotLocationSearchResult.isPresent()){
+          throw new VehicleIsAlreadyParkedException(vehicleId, lotLocationSearchResult.get());
+        }
+
+        Optional<ParkingLot> parkingLotSearchResult = findSpotFor(vehicleType);
+        if(parkingLotSearchResult.isPresent()){
+            park(vehicleId, parkingLotSearchResult.get());
         } else {
            throw new OutOfAvailablePlacesException(String.format("no more place for %s", vehicleType));
         }
