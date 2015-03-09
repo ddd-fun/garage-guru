@@ -13,6 +13,13 @@ public class ParkingApplication {
 
     public ParkingTicket tryToPark(VehicleId vehicleId, VehicleType vehicleType)
             throws OutOfAvailablePlacesException{
+
+        Optional<LotLocation> lotLocationSearchResult = this.parkingFacility.findVehicle(vehicleId);
+        if(lotLocationSearchResult.isPresent()){
+          throw new VehicleIsAlreadyParkedException(vehicleId, lotLocationSearchResult.get());
+        }
+
+
         Optional<LotLocation> locationSearchResult = this.parkingFacility.findSuitableLotFor(vehicleType);
         if(locationSearchResult.isPresent()){
            this.parkingFacility.tryToPark(vehicleId, vehicleType, locationSearchResult.get());

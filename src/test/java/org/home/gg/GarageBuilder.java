@@ -5,13 +5,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-public class BigGarageBuilder {
+public class GarageBuilder {
 
     private Stack<String> levels = new Stack<String>();
     private Set<ParkingLot> slots = new HashSet<ParkingLot>();
 
 
-    public BigGarageBuilder addLevel(String level){
+    public GarageBuilder withLevel(String level){
         if(this.levels.contains(level)){
           throw new IllegalArgumentException(String.format("%s already defined"));
         }else{
@@ -20,7 +20,7 @@ public class BigGarageBuilder {
       return this;
     }
 
-    public BigGarageBuilder addPlace(String place, VehicleSpec vehicleSpec){
+    public GarageBuilder withParkingLot(String place, VehicleSpec vehicleSpec){
         if(this.levels.isEmpty()){
            throw new IllegalStateException("level should be defined before");
         }

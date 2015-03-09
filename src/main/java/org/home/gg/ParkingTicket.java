@@ -21,6 +21,6 @@ public class ParkingTicket {
 
     @Override
     public String toString() {
-        return String.format("Parking ticket: %s, location=%s", vehicleId, lotLocation);
+        return String.format("Parking ticket for vehicle %s. Location: %s", vehicleId, lotLocation);
     }
 }
