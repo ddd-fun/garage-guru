@@ -1,4 +1,4 @@
-package org.home.gg;
+package org.home.gg.domain;
 
 
 public enum VehicleType {

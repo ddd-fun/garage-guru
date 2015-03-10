@@ -1,5 +1,7 @@
-package org.home.gg;
+package org.home.gg.application;
 
+
+import org.home.gg.domain.*;
 
 import java.util.Optional;
 
@@ -12,7 +14,7 @@ public class ParkingApplication {
     }
 
     public LotLocation tryToPark(VehicleId vehicleId, ParkingLotSpec parkingLotSpec)
-            throws OutOfAvailablePlacesException{
+            throws OutOfAvailablePlacesException {
 
         Optional<ParkingLot> lotLocationSearchResult = this.parkingFacility.findVehicle(vehicleId);
         if(lotLocationSearchResult.isPresent()){

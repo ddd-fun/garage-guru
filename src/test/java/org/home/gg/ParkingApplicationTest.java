@@ -1,5 +1,7 @@
 package org.home.gg;
 
+import org.home.gg.application.ParkingApplication;
+import org.home.gg.domain.*;
 import org.junit.Test;
 
 import java.util.EnumSet;

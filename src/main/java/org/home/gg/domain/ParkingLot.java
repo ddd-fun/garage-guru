@@ -1,4 +1,4 @@
-package org.home.gg;
+package org.home.gg.domain;
 
 
 import java.util.EnumSet;
@@ -6,7 +6,7 @@ import java.util.EnumSet;
 public class ParkingLot {
 
     private final LotLocation location;
-    private EnumSet<VehicleType>  suitableVehicleTypes;
+    private final EnumSet<VehicleType>  suitableVehicleTypes;
 
     public ParkingLot(LotLocation location, EnumSet<VehicleType> suitableVehicleTypes) {
       this.location = location;

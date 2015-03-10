@@ -1,6 +1,8 @@
 package org.home.gg;
 
 
+import org.home.gg.domain.VehicleId;
+
 public class VehicleIdDataBuilder {
 
     public static final String[] VALID_IDS = new String[]{"ab1254", "cd789"};

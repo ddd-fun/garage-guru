@@ -1,6 +1,12 @@
 package org.home.gg;
 
 
+import org.home.gg.domain.LotLocation;
+import org.home.gg.domain.ParkingFacility;
+import org.home.gg.domain.ParkingLot;
+import org.home.gg.domain.VehicleType;
+import org.home.gg.infrastructure.InMemoryGarage;
+
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,7 +36,7 @@ public class GarageBuilder {
     }
 
     public ParkingFacility buildGarage(){
-        return new BigGarage(slots);
+        return new InMemoryGarage(slots);
     }
 
 

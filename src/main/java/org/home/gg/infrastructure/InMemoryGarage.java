@@ -1,14 +1,16 @@
-package org.home.gg;
+package org.home.gg.infrastructure;
 
+
+import org.home.gg.domain.*;
 
 import java.util.*;
 
-public class BigGarage implements ParkingFacility {
+public class InMemoryGarage implements ParkingFacility {
 
     private final Set<ParkingLot> availableLots;
     private final Map<VehicleId, ParkingLot> reservedLots;
 
-    public BigGarage(Set<ParkingLot> availableLots) {
+    public InMemoryGarage(Set<ParkingLot> availableLots) {
        this.availableLots = new HashSet<ParkingLot>(availableLots);
        this.reservedLots = new HashMap<VehicleId, ParkingLot>(availableLots.size());
     }

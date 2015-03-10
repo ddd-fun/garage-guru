@@ -1,5 +1,6 @@
 package org.home.gg;
 
+import org.home.gg.domain.VehicleId;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
