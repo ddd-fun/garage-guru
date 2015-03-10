@@ -35,19 +35,12 @@ public class InMemoryGarage implements ParkingFacility {
     }
 
     @Override
-    public void tryToPark(VehicleId vehicleId, ParkingLotSpec parkingLotSpec, ParkingLot parkingLot)
+    public void save(ParkingLot parkingLot)
              throws OutOfAvailablePlacesException, VehicleIsAlreadyParkedException {
 
-        if(!parkingLotSpec.isSatisfiedBy(parkingLot)){
-          throw new IllegalArgumentException(String.format("%s is not satisfied by %s", parkingLot, parkingLotSpec));
-        }
-
-        Optional<ParkingLot> lotLocationSearchResult = findVehicle(vehicleId);
-        if(lotLocationSearchResult.isPresent()){
-          throw new VehicleIsAlreadyParkedException(vehicleId, lotLocationSearchResult.get().getLocation());
-        }
-
-        park(vehicleId, parkingLot);
+        if(!parkingLot.isFree()){
+           park(parkingLot.getParkedVehicle(), parkingLot);
+        } //TODO add release logic
 
     }
 

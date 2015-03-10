@@ -21,11 +21,12 @@ public class ParkingApplication {
           throw new VehicleIsAlreadyParkedException(vehicleId, lotLocationSearchResult.get().getLocation());
         }
 
-
         Optional<ParkingLot> locationSearchResult = this.parkingFacility.findSuitableLotFor(parkingLotSpec);
         if(locationSearchResult.isPresent()){
-           this.parkingFacility.tryToPark(vehicleId, parkingLotSpec, locationSearchResult.get());
-          return locationSearchResult.get().getLocation();
+            ParkingLot parkingLot = locationSearchResult.get();
+            parkingLot.parkVehicle(vehicleId, parkingLotSpec);
+           this.parkingFacility.save(parkingLot);
+          return parkingLot.getLocation();
         }else{
           throw new OutOfAvailablePlacesException(String.format("no more lot suitable for %s", parkingLotSpec));
         }

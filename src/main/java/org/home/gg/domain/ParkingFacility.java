@@ -11,6 +11,6 @@ public interface ParkingFacility {
 
     Optional<ParkingLot> findVehicle(VehicleId vehicleId);
 
-    void tryToPark(VehicleId id, ParkingLotSpec parkingLotSpec, ParkingLot parkingLot) throws OutOfAvailablePlacesException, VehicleIsAlreadyParkedException;
+    void save(ParkingLot parkingLot);
 
 }
