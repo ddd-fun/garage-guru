@@ -9,7 +9,7 @@ public class ParkingLotSpecBuilder {
     }
 
     public  static ParkingLotSpec forMotorbike(){
-       return new TypeBasedParkingLotSpec(VehicleType.MOTORBYKE);
+       return new TypeBasedParkingLotSpec(VehicleType.MOTORBIKE);
     }
 
 
