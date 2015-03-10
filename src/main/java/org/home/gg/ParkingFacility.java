@@ -7,10 +7,10 @@ public interface ParkingFacility {
 
     AvailableLots getAvailableLots();
 
-    Optional<LotLocation> findSuitableLotFor(VehicleType vehicleType);
+    Optional<ParkingLot> findSuitableLotFor(ParkingLotSpec parkingLotSpec);
 
-    Optional<LotLocation> findVehicle(VehicleId vehicleId);
+    Optional<ParkingLot> findVehicle(VehicleId vehicleId);
 
-    void tryToPark(VehicleId id, VehicleType vehicleType, LotLocation location) throws OutOfAvailablePlacesException, VehicleIsAlreadyParkedException;
+    void tryToPark(VehicleId id, ParkingLotSpec parkingLotSpec, ParkingLot parkingLot) throws OutOfAvailablePlacesException, VehicleIsAlreadyParkedException;
 
 }

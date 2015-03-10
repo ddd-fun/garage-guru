@@ -2,6 +2,8 @@ package org.home.gg;
 
 import org.junit.Test;
 
+import java.util.EnumSet;
+
 import static org.junit.Assert.*;
 
 public class ParkingApplicationTest {
@@ -21,7 +23,7 @@ public class ParkingApplicationTest {
                         anOneLevelGarage("A")
                            .withParkingLot("1", suitableForCarOnly()));
 
-        LotLocation lotLocation = application.tryToPark(vehicleId, VehicleType.CAR);
+        LotLocation lotLocation = application.tryToPark(vehicleId, ParkingLotSpecBuilder.forCar());
 
         assertEquals(lotLocation, application.findVehicleBy(vehicleId).get());
 
@@ -38,8 +40,8 @@ public class ParkingApplicationTest {
                 anOneLevelGarage("A")
                         .withParkingLot("1", suitableForCarOnly()));
 
-        application.tryToPark(new VehicleId(vehicleId), VehicleType.CAR);
-        application.tryToPark(new VehicleId(vehicleId), VehicleType.CAR);
+        application.tryToPark(new VehicleId(vehicleId), ParkingLotSpecBuilder.forCar());
+        application.tryToPark(new VehicleId(vehicleId), ParkingLotSpecBuilder.forCar());
     }
 
 
@@ -51,13 +53,13 @@ public class ParkingApplicationTest {
                 anOneLevelGarage("A")
                         .withParkingLot("1", suitableForCarOnly()));
 
-        application.tryToPark(new VehicleId("AB456H"), VehicleType.CAR);
-        application.tryToPark(new VehicleId("VB356G"), VehicleType.CAR);
+        application.tryToPark(new VehicleId("AB456H"), ParkingLotSpecBuilder.forCar());
+        application.tryToPark(new VehicleId("VB356G"), ParkingLotSpecBuilder.forCar());
     }
 
 
-    private VehicleSpec suitableForCarOnly() {
-      return new VehicleSpecBuilder().aCar();
+    private EnumSet<VehicleType> suitableForCarOnly() {
+      return EnumSet.of(VehicleType.CAR);
     }
 
 

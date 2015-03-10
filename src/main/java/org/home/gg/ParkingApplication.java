@@ -11,27 +11,32 @@ public class ParkingApplication {
         this.parkingFacility = parkingFacility;
     }
 
-    public LotLocation tryToPark(VehicleId vehicleId, VehicleType vehicleType)
+    public LotLocation tryToPark(VehicleId vehicleId, ParkingLotSpec parkingLotSpec)
             throws OutOfAvailablePlacesException{
 
-        Optional<LotLocation> lotLocationSearchResult = this.parkingFacility.findVehicle(vehicleId);
+        Optional<ParkingLot> lotLocationSearchResult = this.parkingFacility.findVehicle(vehicleId);
         if(lotLocationSearchResult.isPresent()){
-          throw new VehicleIsAlreadyParkedException(vehicleId, lotLocationSearchResult.get());
+          throw new VehicleIsAlreadyParkedException(vehicleId, lotLocationSearchResult.get().getLocation());
         }
 
 
-        Optional<LotLocation> locationSearchResult = this.parkingFacility.findSuitableLotFor(vehicleType);
+        Optional<ParkingLot> locationSearchResult = this.parkingFacility.findSuitableLotFor(parkingLotSpec);
         if(locationSearchResult.isPresent()){
-           this.parkingFacility.tryToPark(vehicleId, vehicleType, locationSearchResult.get());
-          return locationSearchResult.get();
+           this.parkingFacility.tryToPark(vehicleId, parkingLotSpec, locationSearchResult.get());
+          return locationSearchResult.get().getLocation();
         }else{
-          throw new OutOfAvailablePlacesException(String.format("no more lot left suitable for %s", vehicleType));
+          throw new OutOfAvailablePlacesException(String.format("no more lot suitable for %s", parkingLotSpec));
         }
     }
 
 
     public Optional<LotLocation> findVehicleBy(VehicleId vehicleId){
-      return this.parkingFacility.findVehicle(vehicleId);
+        Optional<ParkingLot> lotOptional = this.parkingFacility.findVehicle(vehicleId);
+        if(lotOptional.isPresent()){
+            return Optional.of(lotOptional.get().getLocation());
+        }else{
+          return Optional.empty();
+        }
     }
 
 

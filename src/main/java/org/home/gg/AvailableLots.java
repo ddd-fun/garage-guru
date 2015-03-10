@@ -1,9 +1,6 @@
 package org.home.gg;
 
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class AvailableLots {
 
     private final int size;

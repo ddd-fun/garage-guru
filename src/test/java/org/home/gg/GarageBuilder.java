@@ -1,6 +1,7 @@
 package org.home.gg;
 
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
@@ -20,11 +21,11 @@ public class GarageBuilder {
       return this;
     }
 
-    public GarageBuilder withParkingLot(String place, VehicleSpec vehicleSpec){
+    public GarageBuilder withParkingLot(String place, EnumSet<VehicleType> supportedTypes){
         if(this.levels.isEmpty()){
            throw new IllegalStateException("level should be defined before");
         }
-       this.slots.add(new ParkingLot(new LotLocation(this.levels.peek(), place), vehicleSpec));
+       this.slots.add(new ParkingLot(new LotLocation(this.levels.peek(), place), supportedTypes));
       return this;
     }
 
