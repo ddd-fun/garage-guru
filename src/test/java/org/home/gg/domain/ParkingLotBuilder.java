@@ -9,21 +9,21 @@ public class ParkingLotBuilder {
     private LotLocation lotLocation;
     private EnumSet<VehicleType> supportedVehicles = EnumSet.of(VehicleType.CAR);
 
-    ParkingLotBuilder with(LotLocation lotLocation){
+    public ParkingLotBuilder with(LotLocation lotLocation){
         this.lotLocation = lotLocation;
       return this;
     }
 
-    ParkingLotBuilder with(EnumSet<VehicleType> supportedVehicles){
+    public ParkingLotBuilder with(EnumSet<VehicleType> supportedVehicles){
         this.supportedVehicles = supportedVehicles;
       return this;
     }
 
-    ParkingLotBuilder but(){
+    public ParkingLotBuilder but(){
         return new ParkingLotBuilder().with(lotLocation).with(supportedVehicles);
     }
 
-    ParkingLot build(){
+    public ParkingLot build(){
         return new ParkingLot(lotLocation, supportedVehicles);
     }
 
