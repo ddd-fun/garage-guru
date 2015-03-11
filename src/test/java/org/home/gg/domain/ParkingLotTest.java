@@ -42,7 +42,7 @@ public class ParkingLotTest {
 
         VehicleId vehicleId = new VehicleId("AB213H");
 
-        //I want to test only parking lot but not specification, so mocked it here
+        //I want to keep test flexible, so testing only parking lot but not specification logic
         parkingLot.parkVehicle(vehicleId, anyParkingLotIsAcceptable());
 
         assertFalse(parkingLot.isFree());
@@ -89,34 +89,6 @@ public class ParkingLotTest {
                return false;
             }
         };
-    }
-
-
-
-
-    static class ParkingLotBuilder{
-
-        private LotLocation lotLocation;
-        private EnumSet<VehicleType> supportedVehicles = EnumSet.of(VehicleType.CAR);
-
-        ParkingLotBuilder with(LotLocation lotLocation){
-           this.lotLocation = lotLocation;
-         return this;
-        }
-
-        ParkingLotBuilder with(EnumSet<VehicleType> supportedVehicles){
-            this.supportedVehicles = supportedVehicles;
-            return this;
-        }
-
-        ParkingLotBuilder but(){
-            return new ParkingLotBuilder().with(lotLocation).with(supportedVehicles);
-        }
-
-        ParkingLot build(){
-         return new ParkingLot(lotLocation, supportedVehicles);
-        }
-
     }
 
 
