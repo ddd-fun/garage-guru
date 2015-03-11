@@ -56,6 +56,17 @@ public class ParkingApplicationTest {
     }
 
 
+    @Test(expected = ParkingLotNotFoundException.class)
+    public void whenThereIsNoSuitableParkingLotThenParkingAttemptCausesException() throws Exception {
+
+        ParkingApplication application =
+                aParkingAppWith(aGarage().with(aParkingLot().with(new LotLocation("A", "1"))
+                                                            .with((vehicleSpecRejectingAnyTypes()))));
+
+        application.tryToPark(new VehicleId("VB356G"), VehicleType.CAR);
+    }
+
+
     private void havingCarParked(VehicleId id, ParkingApplication application){
         LotLocation lotLocation  = application.tryToPark(id, VehicleType.CAR);
         assertEquals("vehicle could be found by id", lotLocation, application.findVehicleBy(id).get());
@@ -71,6 +82,9 @@ public class ParkingApplicationTest {
       return VehicleSpecBuilder.anyVehicleSpec();
     }
 
+    private VehicleSpec vehicleSpecRejectingAnyTypes() {
+        return VehicleSpecBuilder.neitherVehicleSpec();
+    }
 
 
     private GarageBuilder aGarage(){
