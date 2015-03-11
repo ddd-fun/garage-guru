@@ -1,24 +1,26 @@
 package org.home.gg.domain;
 
 
-import java.util.EnumSet;
+import org.home.gg.domain.common.Validators;
 
 public class ParkingLot {
 
     private final LotLocation location;
-    private final EnumSet<VehicleType>  suitableVehicleTypes;
+    private final VehicleSpec supportedVehiclesSpec;
     private VehicleId parkedVehicle;
 
-    public ParkingLot(LotLocation location, EnumSet<VehicleType> suitableVehicleTypes) {
+    public ParkingLot(LotLocation location, VehicleSpec supportedVehiclesSpec) {
+      Validators.assertArgIsNotNull(location);
+      Validators.assertArgIsNotNull(supportedVehiclesSpec);
       this.location = location;
-      this.suitableVehicleTypes = EnumSet.copyOf(suitableVehicleTypes);
+      this.supportedVehiclesSpec = supportedVehiclesSpec;
     }
 
 
-    public void parkVehicle(VehicleId vehicleId, ParkingLotSpec parkingLotSpec){
-        if(!parkingLotSpec.isSatisfiedBy(this)){
+    public void parkVehicle(VehicleId vehicleId, VehicleType vehicleType){
+        if(!this.supportedVehiclesSpec.isSatisfiedBy(vehicleType)){
            //TODO consider exception for this case
-           throw new IllegalArgumentException(String.format("%s is not satisfied by %s", this, parkingLotSpec));
+           throw new IllegalArgumentException(String.format("%s is not supported by %s", vehicleType, supportedVehiclesSpec));
         }
 
         if(isFree()){
@@ -29,6 +31,9 @@ public class ParkingLot {
         }
     }
 
+    public boolean supports(VehicleType vehicleType){
+      return this.supportedVehiclesSpec.isSatisfiedBy(vehicleType);
+    }
 
     public boolean isFree(){
       return parkedVehicle == null;
@@ -42,18 +47,13 @@ public class ParkingLot {
        this.parkedVehicle = null;
     }
 
-
     public LotLocation getLocation() {
       return this.location;
     }
 
-    public EnumSet<VehicleType> getSuitableVehicleTypes() {
-        return EnumSet.copyOf(this.suitableVehicleTypes);
-    }
-
     @Override
     public String toString() {
-        return String.format("ParkingLot: %s, suitable vehicle types: %s", location, suitableVehicleTypes);
+        return String.format("ParkingLot: %s, suitable vehicle: %s", location, this.supportedVehiclesSpec);
     }
 
     @Override

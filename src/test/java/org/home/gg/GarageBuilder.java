@@ -1,42 +1,28 @@
 package org.home.gg;
 
 
-import org.home.gg.domain.LotLocation;
-import org.home.gg.domain.ParkingFacility;
-import org.home.gg.domain.ParkingLot;
-import org.home.gg.domain.VehicleType;
+import org.home.gg.domain.*;
 import org.home.gg.infrastructure.InMemoryGarage;
-
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Stack;
+
 
 public class GarageBuilder {
 
-    private Stack<String> levels = new Stack<String>();
-    private Set<ParkingLot> slots = new HashSet<ParkingLot>();
+    private Set<ParkingLot> lotsSet = new HashSet<ParkingLot>();
 
-
-    public GarageBuilder withLevel(String level){
-        if(this.levels.contains(level)){
-          throw new IllegalArgumentException(String.format("%s already defined"));
+    public GarageBuilder with(ParkingLotBuilder parkingLotBuilder){
+        ParkingLot parkingLot = parkingLotBuilder.build();
+        if(this.lotsSet.contains(parkingLot)){
+           throw new IllegalArgumentException(String.format("already contains %s", parkingLot));
         }else{
-           this.levels.push(level);
+           this.lotsSet.add(parkingLot);
         }
-      return this;
-    }
-
-    public GarageBuilder withParkingLot(String place, EnumSet<VehicleType> supportedTypes){
-        if(this.levels.isEmpty()){
-           throw new IllegalStateException("level should be defined before");
-        }
-       this.slots.add(new ParkingLot(new LotLocation(this.levels.peek(), place), supportedTypes));
       return this;
     }
 
     public ParkingFacility buildGarage(){
-        return new InMemoryGarage(slots);
+        return new InMemoryGarage(lotsSet);
     }
 
 

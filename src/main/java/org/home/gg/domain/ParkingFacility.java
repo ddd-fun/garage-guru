@@ -7,7 +7,7 @@ public interface ParkingFacility {
 
     AvailableLots getAvailableLots();
 
-    Optional<ParkingLot> findSuitableLotFor(ParkingLotSpec parkingLotSpec);
+    Optional<ParkingLot> findSuitableLotFor(VehicleType vehicle);
 
     Optional<ParkingLot> findVehicle(VehicleId vehicleId);
 

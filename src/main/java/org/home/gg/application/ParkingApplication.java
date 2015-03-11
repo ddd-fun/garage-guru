@@ -13,26 +13,26 @@ public class ParkingApplication {
         this.parkingFacility = parkingFacility;
     }
 
-    public LotLocation tryToPark(VehicleId vehicleId, ParkingLotSpec parkingLotSpec)
+    public LotLocation tryToPark(VehicleId vehicleId, VehicleType vehicleType)
             throws OutOfAvailablePlacesException {
 
         checkIfVehicleAlreadyParked(vehicleId);
 
-        ParkingLot parkingLot = getSuitableParkingLot(parkingLotSpec);
+        ParkingLot parkingLot = getSuitableParkingLot(vehicleType);
 
-        parkingLot.parkVehicle(vehicleId, parkingLotSpec);
+        parkingLot.parkVehicle(vehicleId, vehicleType);
 
         this.parkingFacility.save(parkingLot);
 
       return parkingLot.getLocation();
     }
 
-    private ParkingLot getSuitableParkingLot(ParkingLotSpec parkingLotSpec){
-        Optional<ParkingLot> maybeParkingLot = this.parkingFacility.findSuitableLotFor(parkingLotSpec);
+    private ParkingLot getSuitableParkingLot(VehicleType vehicle){
+        Optional<ParkingLot> maybeParkingLot = this.parkingFacility.findSuitableLotFor(vehicle);
         if(maybeParkingLot.isPresent()){
            return maybeParkingLot.get();
         }else{
-          throw new OutOfAvailablePlacesException(String.format("no more lot suitable for %s", parkingLotSpec));
+          throw new OutOfAvailablePlacesException(String.format("parking lot suitable for %s is not found", vehicle));
         }
     }
 

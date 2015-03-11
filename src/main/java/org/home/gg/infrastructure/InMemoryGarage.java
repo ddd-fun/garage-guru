@@ -25,9 +25,9 @@ public class InMemoryGarage implements ParkingFacility {
     }
 
     @Override
-    public Optional<ParkingLot> findSuitableLotFor(ParkingLotSpec parkingLotSpec) {
+    public Optional<ParkingLot> findSuitableLotFor(VehicleType vehicle) {
         for(ParkingLot aLot : this.availableLots){
-            if(parkingLotSpec.isSatisfiedBy(aLot)){
+            if(aLot.supports(vehicle)){
               return Optional.of(aLot);
             }
         }

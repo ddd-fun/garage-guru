@@ -2,8 +2,6 @@ package org.home.gg.domain;
 
 import org.junit.Test;
 
-import java.util.EnumSet;
-
 import static org.junit.Assert.*;
 
 public class ParkingLotTest {
@@ -12,7 +10,8 @@ public class ParkingLotTest {
     @Test
     public void testEquality(){
 
-        ParkingLotBuilder parkingLotExample = new ParkingLotBuilder().with(new LotLocation("A", "1"));
+        ParkingLotBuilder parkingLotExample = aParkingLot().with(new LotLocation("A", "1"))
+                                                           .with(anyVehicleSpec());
 
         ParkingLot aParkingLot = parkingLotExample.build();
         assertTrue("the same instances are equal", aParkingLot.equals(aParkingLot));
@@ -29,7 +28,7 @@ public class ParkingLotTest {
     @Test
     public void whenThereIsNoVehicleParkedThenParkingLotIsFree(){
 
-        ParkingLot parkingLot = aFreeParkingLot();
+        ParkingLot parkingLot = aFreeParkingLot().build();
 
         assertTrue(parkingLot.isFree());
     }
@@ -38,12 +37,12 @@ public class ParkingLotTest {
     @Test
     public void whenVehicleIsParkedThenParkingLotIsNotFree(){
 
-        ParkingLot parkingLot = aFreeParkingLot();
+        ParkingLot parkingLot = aFreeParkingLot().build();
 
         VehicleId vehicleId = new VehicleId("AB213H");
 
         //I want to keep test flexible, so testing only parking lot but not specification logic
-        parkingLot.parkVehicle(vehicleId, anyParkingLotIsAcceptable());
+        parkingLot.parkVehicle(vehicleId, VehicleType.CAR);
 
         assertFalse(parkingLot.isFree());
 
@@ -51,11 +50,11 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void whenParkingLotSpecificationDoesntSatisfyThenVehicleIsRejected(){
+    public void whenParkingLotDoesntSupportVehicleTypeThenVehicleIsRejected(){
 
-        ParkingLot parkingLot = aFreeParkingLot();
+        ParkingLot parkingLot = aFreeParkingLot().but().with(neitherVehicleSpec()).build();
         try{
-            parkingLot.parkVehicle(new VehicleId("AB213H"), neitherParkingLotIsAcceptable());
+            parkingLot.parkVehicle(new VehicleId("AB213H"), VehicleType.CAR);
             fail("vehicle should be rejected");
         }catch (RuntimeException ex){
             assertTrue(parkingLot.isFree());
@@ -64,29 +63,33 @@ public class ParkingLotTest {
     }
 
 
-    public ParkingLot aFreeParkingLot(){
+    public ParkingLotBuilder aParkingLot(){
+      return new ParkingLotBuilder();
+    }
+
+
+    public ParkingLotBuilder aFreeParkingLot(){
         return new ParkingLotBuilder()
                        .with(new LotLocation("A", "1"))
-                       .with(EnumSet.of(VehicleType.CAR))
-                   .build();
+                       .with(anyVehicleSpec());
     }
 
 
 
-    public ParkingLotSpec anyParkingLotIsAcceptable(){
-        return new ParkingLotSpec() {
+    public VehicleSpec anyVehicleSpec(){
+        return new VehicleSpec() {
             @Override
-            public boolean isSatisfiedBy(ParkingLot parkingLot) {
+            public boolean isSatisfiedBy(VehicleType parkingLot) {
                 return true;
             }
         };
     }
 
-    public ParkingLotSpec neitherParkingLotIsAcceptable(){
-        return new ParkingLotSpec() {
+    public VehicleSpec neitherVehicleSpec(){
+        return new VehicleSpec() {
             @Override
-            public boolean isSatisfiedBy(ParkingLot parkingLot) {
-               return false;
+            public boolean isSatisfiedBy(VehicleType parkingLot) {
+                return false;
             }
         };
     }
