@@ -36,7 +36,7 @@ public class InMemoryGarage implements ParkingFacility {
 
     @Override
     public void save(ParkingLot parkingLot)
-             throws OutOfAvailablePlacesException, VehicleIsAlreadyParkedException {
+             throws ParkingLotNotFoundException, VehicleIsAlreadyParkedException {
 
         if(!parkingLot.isFree()){
            park(parkingLot.getParkedVehicle(), parkingLot);

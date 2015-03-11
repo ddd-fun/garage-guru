@@ -41,7 +41,7 @@ public class ParkingApplicationTest {
 
 
 
-    @Test(expected = OutOfAvailablePlacesException.class)
+    @Test(expected = ParkingLotNotFoundException.class)
     public void whenThereIsNoAvailableLotThenParkingAttemptCausesException() throws Exception {
 
         ParkingApplication application =

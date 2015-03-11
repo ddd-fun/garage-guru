@@ -14,7 +14,7 @@ public class ParkingApplication {
     }
 
     public LotLocation tryToPark(VehicleId vehicleId, VehicleType vehicleType)
-            throws OutOfAvailablePlacesException {
+            throws ParkingLotNotFoundException {
 
         checkIfVehicleAlreadyParked(vehicleId);
 
@@ -32,7 +32,7 @@ public class ParkingApplication {
         if(maybeParkingLot.isPresent()){
            return maybeParkingLot.get();
         }else{
-          throw new OutOfAvailablePlacesException(String.format("parking lot suitable for %s is not found", vehicle));
+          throw new ParkingLotNotFoundException(String.format("parking lot suitable for %s is not found", vehicle));
         }
     }
 
