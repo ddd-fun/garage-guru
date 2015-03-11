@@ -1,4 +1,4 @@
-package org.home.gg.domain;
+package org.home.gg.application;
 
 
 public class ParkingLotNotFoundException extends RuntimeException {

@@ -1,6 +1,8 @@
 package org.home.gg;
 
 import org.home.gg.application.ParkingApplication;
+import org.home.gg.application.ParkingLotNotFoundException;
+import org.home.gg.application.VehicleIsAlreadyParkedException;
 import org.home.gg.domain.*;
 import org.junit.Test;
 

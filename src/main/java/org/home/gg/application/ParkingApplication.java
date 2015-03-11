@@ -14,7 +14,7 @@ public class ParkingApplication {
     }
 
     public LotLocation tryToPark(VehicleId vehicleId, VehicleType vehicleType)
-            throws ParkingLotNotFoundException {
+            throws ParkingLotNotFoundException, VehicleIsAlreadyParkedException {
 
         checkIfVehicleAlreadyParked(vehicleId);
 
