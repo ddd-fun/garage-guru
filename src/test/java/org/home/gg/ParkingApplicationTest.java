@@ -11,13 +11,9 @@ import static org.junit.Assert.*;
 public class ParkingApplicationTest {
 
 
-    private ParkingApplication createParkingApplicationWith(GarageBuilder garageBuilder){
-      return new ParkingApplication(garageBuilder.buildGarage());
-    }
-
 
     @Test
-    public void whenThereIsAvailablePlaceThenParkingLotLocationIsReturned() throws Exception {
+    public void whenThereIsAvailablePlaceThenVehicleCouldBeParked() throws Exception {
 
         VehicleId vehicleId = new VehicleId("AB465KL");
 
@@ -25,16 +21,14 @@ public class ParkingApplicationTest {
                         anOneLevelGarage("A")
                            .withParkingLot("1", suitableForCarOnly()));
 
-        LotLocation lotLocation = application.tryToPark(vehicleId, ParkingLotSpecBuilder.forCar());
+        havingCarParked(vehicleId, application);
 
-        assertEquals(lotLocation, application.findVehicleBy(vehicleId).get());
-
-        assertTrue(application.getAvailableLots().isEmpty());
+        assertTrue("no available lots", application.getAvailableLots().isEmpty());
     }
 
 
     @Test(expected = VehicleIsAlreadyParkedException.class)
-    public void whenTheVehicleIsAlreadyParkedThenExceptionIsThrown() throws Exception {
+    public void whenTheVehicleIsAlreadyParkedThenSecondParkingAttemptCausesException() throws Exception {
 
         String vehicleId = "AB456H";
 
@@ -42,21 +36,34 @@ public class ParkingApplicationTest {
                 anOneLevelGarage("A")
                         .withParkingLot("1", suitableForCarOnly()));
 
-        application.tryToPark(new VehicleId(vehicleId), ParkingLotSpecBuilder.forCar());
+        havingCarParked(new VehicleId(vehicleId), application);
+
         application.tryToPark(new VehicleId(vehicleId), ParkingLotSpecBuilder.forCar());
     }
 
 
 
     @Test(expected = OutOfAvailablePlacesException.class)
-    public void whenThereIsNoAvailablePlaceThenExceptionIsThrown() throws Exception {
+    public void whenThereIsNoAvailableLotThenParkingAttemptCausesException() throws Exception {
 
         ParkingApplication application = createParkingApplicationWith(
                 anOneLevelGarage("A")
                         .withParkingLot("1", suitableForCarOnly()));
 
-        application.tryToPark(new VehicleId("AB456H"), ParkingLotSpecBuilder.forCar());
+        havingCarParked(new VehicleId("AB456H"), application);
+
         application.tryToPark(new VehicleId("VB356G"), ParkingLotSpecBuilder.forCar());
+    }
+
+
+    private void havingCarParked(VehicleId id, ParkingApplication application){
+        LotLocation lotLocation  = application.tryToPark(id, ParkingLotSpecBuilder.forCar());
+        assertEquals("vehicle could be found by id", lotLocation, application.findVehicleBy(id).get());
+    }
+
+
+    private ParkingApplication createParkingApplicationWith(GarageBuilder garageBuilder){
+        return new ParkingApplication(garageBuilder.buildGarage());
     }
 
 
