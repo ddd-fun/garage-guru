@@ -1,4 +1,4 @@
-package org.home.gg;
+package org.home.gg.domain;
 
 import org.home.gg.domain.VehicleId;
 import org.junit.Test;
