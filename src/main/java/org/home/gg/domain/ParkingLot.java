@@ -43,8 +43,15 @@ public class ParkingLot {
       return parkedVehicle;
     }
 
-    public void release() {
-       this.parkedVehicle = null;
+    public void release(VehicleId vehicleId) {
+        if(!isFree()){
+          if( this.parkedVehicle.equals(vehicleId) ){
+              this.parkedVehicle = null;
+          } else {
+              throw new IllegalArgumentException(String.format("%s is not parked on %s", vehicleId, location));
+          }
+        }
+
     }
 
     public LotLocation getLocation() {

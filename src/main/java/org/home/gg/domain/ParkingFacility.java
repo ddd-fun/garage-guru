@@ -9,7 +9,7 @@ public interface ParkingFacility {
 
     Optional<ParkingLot> findSuitableLotFor(VehicleType vehicle);
 
-    Optional<ParkingLot> findVehicle(VehicleId vehicleId);
+    Optional<ParkingLot> findParkedVehicle(VehicleId vehicleId);
 
     void save(ParkingLot parkingLot);
 
