@@ -18,6 +18,7 @@ public class ParkingApplicationTest {
                 aParkingAppWith(aGarage().with(aParkingLot().with(new LotLocation("A", "1"))
                                                             .with(vehicleSpecSuitableForAnyTypes())));
 
+        //TODO for test maintainability relay on valid value generators
         VehicleId vehicleId = new VehicleId("AB465KL");
 
         havingCarParked(vehicleId, application);
