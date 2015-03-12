@@ -50,6 +50,20 @@ public class ParkingLotTest {
     }
 
     @Test
+    public void whenParkingLotIsReleasedThenItIsFree(){
+
+        ParkingLot parkingLot = aFreeParkingLot().build();
+
+        VehicleId vehicleId = new VehicleId("AB123H");
+        parkingLot.parkVehicle(vehicleId, VehicleType.CAR);
+
+        parkingLot.release(vehicleId);
+
+        assertTrue(parkingLot.isFree());
+    }
+
+
+    @Test
     public void whenParkingLotDoesntSupportVehicleTypeThenVehicleIsRejected(){
 
         ParkingLot parkingLot = aFreeParkingLot().but().with(neitherVehicleSpec()).build();

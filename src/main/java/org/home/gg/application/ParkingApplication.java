@@ -27,6 +27,21 @@ public class ParkingApplication {
       return parkingLot.getLocation();
     }
 
+    public void releaseParkingLot(VehicleId vehicleId){
+
+        Optional<ParkingLot> maybeParkingLot = this.parkingFacility.findParkedVehicle(vehicleId);
+
+        if(maybeParkingLot.isPresent()){
+            ParkingLot lot = maybeParkingLot.get();
+            lot.release(vehicleId);
+           this.parkingFacility.save(lot);
+        }else{
+           throw new ParkingLotNotFoundException(String.format("parking lot occupied by %s is not found", vehicleId));
+        }
+    }
+
+
+
     private ParkingLot getSuitableParkingLot(VehicleType vehicle){
         Optional<ParkingLot> maybeParkingLot = this.parkingFacility.findSuitableLotFor(vehicle);
         if(maybeParkingLot.isPresent()){
@@ -37,15 +52,15 @@ public class ParkingApplication {
     }
 
     private void checkIfVehicleAlreadyParked(VehicleId vehicleId){
-        Optional<ParkingLot> maybeParkingLot = this.parkingFacility.findVehicle(vehicleId);
+        Optional<ParkingLot> maybeParkingLot = this.parkingFacility.findParkedVehicle(vehicleId);
         if(maybeParkingLot.isPresent()){
            throw new VehicleIsAlreadyParkedException(vehicleId, maybeParkingLot.get().getLocation());
         }
     }
 
 
-    public Optional<LotLocation> findVehicleBy(VehicleId vehicleId){
-        Optional<ParkingLot> lotOptional = this.parkingFacility.findVehicle(vehicleId);
+    public Optional<LotLocation> findParkedVehicleBy(VehicleId vehicleId){
+        Optional<ParkingLot> lotOptional = this.parkingFacility.findParkedVehicle(vehicleId);
         if(lotOptional.isPresent()){
             return Optional.of(lotOptional.get().getLocation());
         }else{

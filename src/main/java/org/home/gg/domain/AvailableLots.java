@@ -14,5 +14,9 @@ public class AvailableLots {
     }
 
 
+    public int totalLots(){
+      return this.size;
+    }
+
 
 }

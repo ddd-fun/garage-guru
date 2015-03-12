@@ -18,6 +18,7 @@ public class ParkingApplicationTest {
                 aParkingAppWith(aGarage().with(aParkingLot().with(new LotLocation("A", "1"))
                                                             .with(vehicleSpecSuitableForAnyTypes())));
 
+        //TODO for test maintainability relay on valid value generators
         VehicleId vehicleId = new VehicleId("AB465KL");
 
         havingCarParked(vehicleId, application);
@@ -67,9 +68,35 @@ public class ParkingApplicationTest {
     }
 
 
+    @Test
+    public void whenParkingLotIsReleasedThenItIsFree() throws Exception {
+
+        ParkingApplication application =
+                aParkingAppWith(aGarage().with(aParkingLot().with(new LotLocation("A", "1"))
+                                                            .with(vehicleSpecSuitableForAnyTypes())));
+
+        VehicleId vehicleId = new VehicleId("AB456H");
+
+        havingCarParked(vehicleId, application);
+
+        AvailableLots beforeRealized = application.getAvailableLots();
+
+        application.releaseParkingLot(vehicleId);
+
+        assertFalse(application.findParkedVehicleBy(vehicleId).isPresent());
+
+        AvailableLots afterRealised = application.getAvailableLots();
+
+        //TODO introduce less than
+        assertTrue(beforeRealized.totalLots() < afterRealised.totalLots());
+
+    }
+
+
+
     private void havingCarParked(VehicleId id, ParkingApplication application){
         LotLocation lotLocation  = application.tryToPark(id, VehicleType.CAR);
-        assertEquals("vehicle could be found by id", lotLocation, application.findVehicleBy(id).get());
+        assertEquals("vehicle could be found by id", lotLocation, application.findParkedVehicleBy(id).get());
     }
 
 

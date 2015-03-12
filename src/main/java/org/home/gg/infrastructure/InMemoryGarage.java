@@ -17,7 +17,7 @@ public class InMemoryGarage implements ParkingFacility {
     }
 
     @Override
-    public Optional<ParkingLot> findVehicle(VehicleId vehicleId) {
+    public Optional<ParkingLot> findParkedVehicle(VehicleId vehicleId) {
        if(this.reservedLots.containsKey(vehicleId)){
           return Optional.of(this.reservedLots.get(vehicleId));
        }else{
@@ -40,7 +40,9 @@ public class InMemoryGarage implements ParkingFacility {
 
         if(!parkingLot.isFree()){
            park(parkingLot.getParkedVehicle(), parkingLot);
-        } //TODO add release logic
+        } else {
+           release(parkingLot);
+        }
 
     }
 
@@ -56,6 +58,29 @@ public class InMemoryGarage implements ParkingFacility {
         }else{
             throw new IllegalStateException(String.format("%s is not available", parkingLot));
         }
+    }
+
+
+    private void release(ParkingLot parkingLot){
+        if(!this.reservedLots.containsValue(parkingLot.getParkedVehicle())){
+            this.availableLots.add(parkingLot);
+            removeFromReserved(parkingLot);
+        }else {
+           throw new IllegalStateException(String.format("%s is not in reserved set", parkingLot));
+        }
+
+    }
+
+    private void removeFromReserved(ParkingLot parkingLot){
+
+        VehicleId key = null;
+        for(Map.Entry<VehicleId, ParkingLot> entry : this.reservedLots.entrySet() ){
+            if(parkingLot.equals(entry.getValue())){
+                key = entry.getKey();
+                break;
+            }
+        }
+        this.reservedLots.remove(key);
     }
 
 
