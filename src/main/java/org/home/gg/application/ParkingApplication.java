@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public class ParkingApplication {
 
-    private final ParkingLotRepo garage;
+    private final Garage garage;
 
-    public ParkingApplication(ParkingLotRepo garage) {
+    public ParkingApplication(Garage garage) {
         this.garage = garage;
     }
 
@@ -22,8 +22,6 @@ public class ParkingApplication {
 
         parkingLot.parkVehicle(vehicleId, vehicleType);
 
-        this.garage.update(parkingLot);
-
       return parkingLot.getLocation();
     }
 
@@ -34,7 +32,6 @@ public class ParkingApplication {
         if(maybeParkingLot.isPresent()){
             ParkingLot lot = maybeParkingLot.get();
             lot.release(vehicleId);
-           this.garage.update(lot);
         }else{
            throw new ParkingLotNotFoundException(String.format("parking lot occupied by %s is not found", vehicleId));
         }

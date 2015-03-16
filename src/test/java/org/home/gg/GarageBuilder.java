@@ -2,7 +2,7 @@ package org.home.gg;
 
 
 import org.home.gg.domain.*;
-import org.home.gg.infrastructure.InMemoryGarage;
+import org.home.gg.infrastructure.GarageInMemoryImpl;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,8 +21,8 @@ public class GarageBuilder {
       return this;
     }
 
-    public ParkingLotRepo buildGarage(){
-        return new InMemoryGarage(lotsSet);
+    public Garage buildGarage(){
+        return new GarageInMemoryImpl(lotsSet);
     }
 
 
