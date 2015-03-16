@@ -4,13 +4,16 @@ package org.home.gg.infrastructure;
 import org.home.gg.domain.garage.AvailableLots;
 import org.home.gg.domain.garage.Garage;
 import org.home.gg.domain.garage.ParkingLot;
+import org.home.gg.domain.garage.VehicleSpec;
 import org.home.gg.domain.vehicle.VehicleId;
 import org.home.gg.domain.vehicle.VehicleType;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Map;
 import java.util.stream.Stream;
+import static java.util.stream.Collectors.*;
 
 public class GarageInMemoryImpl implements Garage {
 
@@ -30,7 +33,8 @@ public class GarageInMemoryImpl implements Garage {
 
     @Override
     public AvailableLots getAvailableLots() {
-      return new AvailableLots(streamLots().filter(ParkingLot::isFree).count());
+        Map<VehicleSpec, Long> map = streamLots().filter(ParkingLot::isFree).collect( groupingBy(ParkingLot::getVehiclesSpec, counting()) );
+      return new AvailableLots(map);
     }
 
 

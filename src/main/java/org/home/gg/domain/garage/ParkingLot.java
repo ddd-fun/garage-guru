@@ -60,6 +60,10 @@ public class ParkingLot {
       return this.location;
     }
 
+    public VehicleSpec getVehiclesSpec() {
+      return this.supportedVehiclesSpec;
+    }
+
     @Override
     public String toString() {
         return String.format("ParkingLot: %s, suitable vehicle: %s", location, this.supportedVehiclesSpec);
