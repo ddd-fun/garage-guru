@@ -21,7 +21,7 @@ public class GarageBuilder {
       return this;
     }
 
-    public ParkingFacility buildGarage(){
+    public ParkingLotRepo buildGarage(){
         return new InMemoryGarage(lotsSet);
     }
 

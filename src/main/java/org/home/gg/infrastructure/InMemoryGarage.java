@@ -1,12 +1,11 @@
 package org.home.gg.infrastructure;
 
 
-import org.home.gg.application.ParkingLotNotFoundException;
 import org.home.gg.domain.*;
 
 import java.util.*;
 
-public class InMemoryGarage implements ParkingFacility {
+public class InMemoryGarage implements Garage, ParkingLotRepo {
 
     private final Set<ParkingLot> availableLots;
     private final Map<VehicleId, ParkingLot> reservedLots;
@@ -36,7 +35,7 @@ public class InMemoryGarage implements ParkingFacility {
     }
 
     @Override
-    public void save(ParkingLot parkingLot){
+    public void update(ParkingLot parkingLot){
 
         if(!parkingLot.isFree()){
            park(parkingLot.getParkedVehicle(), parkingLot);
