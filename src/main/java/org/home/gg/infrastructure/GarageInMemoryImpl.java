@@ -1,7 +1,11 @@
 package org.home.gg.infrastructure;
 
 
-import org.home.gg.domain.*;
+import org.home.gg.domain.garage.AvailableLots;
+import org.home.gg.domain.garage.Garage;
+import org.home.gg.domain.garage.ParkingLot;
+import org.home.gg.domain.vehicle.VehicleId;
+import org.home.gg.domain.vehicle.VehicleType;
 
 import java.util.HashSet;
 import java.util.Optional;

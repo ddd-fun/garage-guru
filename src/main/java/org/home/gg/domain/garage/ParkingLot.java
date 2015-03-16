@@ -1,7 +1,9 @@
-package org.home.gg.domain;
+package org.home.gg.domain.garage;
 
 
 import org.home.gg.domain.common.Validators;
+import org.home.gg.domain.vehicle.VehicleId;
+import org.home.gg.domain.vehicle.VehicleType;
 
 public class ParkingLot {
 

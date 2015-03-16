@@ -1,6 +1,9 @@
 package org.home.gg.domain;
 
 
+import org.home.gg.domain.garage.VehicleSpec;
+import org.home.gg.domain.vehicle.VehicleType;
+
 public class VehicleSpecBuilder {
 
 

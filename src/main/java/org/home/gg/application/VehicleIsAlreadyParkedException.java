@@ -1,8 +1,8 @@
 package org.home.gg.application;
 
 
-import org.home.gg.domain.LotLocation;
-import org.home.gg.domain.VehicleId;
+import org.home.gg.domain.garage.LotLocation;
+import org.home.gg.domain.vehicle.VehicleId;
 
 public class VehicleIsAlreadyParkedException extends RuntimeException {
     public VehicleIsAlreadyParkedException(VehicleId vehicleId, LotLocation location) {

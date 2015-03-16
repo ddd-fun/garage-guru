@@ -1,6 +1,10 @@
 package org.home.gg.domain;
 
 
+import org.home.gg.domain.garage.LotLocation;
+import org.home.gg.domain.garage.ParkingLot;
+import org.home.gg.domain.garage.VehicleSpec;
+
 public class ParkingLotBuilder {
 
 

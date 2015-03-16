@@ -1,4 +1,4 @@
-package org.home.gg.domain;
+package org.home.gg.domain.garage;
 
 
 public class LotLocation {

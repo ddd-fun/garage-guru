@@ -1,5 +1,10 @@
 package org.home.gg.domain;
 
+import org.home.gg.domain.garage.LotLocation;
+import org.home.gg.domain.garage.ParkingLot;
+import org.home.gg.domain.garage.VehicleSpec;
+import org.home.gg.domain.vehicle.VehicleId;
+import org.home.gg.domain.vehicle.VehicleType;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

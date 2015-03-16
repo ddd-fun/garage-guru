@@ -1,5 +1,8 @@
-package org.home.gg.domain;
+package org.home.gg.domain.garage;
 
+
+import org.home.gg.domain.vehicle.VehicleId;
+import org.home.gg.domain.vehicle.VehicleType;
 
 import java.util.Optional;
 
