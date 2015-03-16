@@ -3,9 +3,9 @@ package org.home.gg.domain;
 
 public class AvailableLots {
 
-    private final int size;
+    private final long size;
 
-    public AvailableLots(int size) {
+    public AvailableLots(long size) {
         this.size = size;
     }
 
@@ -14,7 +14,7 @@ public class AvailableLots {
     }
 
 
-    public int totalLots(){
+    public long totalLots(){
       return this.size;
     }
 

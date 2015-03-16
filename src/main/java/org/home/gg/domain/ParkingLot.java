@@ -3,11 +3,22 @@ package org.home.gg.domain;
 
 import org.home.gg.domain.common.Validators;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 public class ParkingLot {
 
     private final LotLocation location;
     private final VehicleSpec supportedVehiclesSpec;
     private VehicleId parkedVehicle;
+
+    /**
+     * This implementation uses locks to control state modifications.
+     * Having both types of locks improves performance during iterative reads when looking for suitable lot.
+     */
+    private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    private final Lock read  = readWriteLock.readLock();
+    private final Lock write = readWriteLock.writeLock();
 
     public ParkingLot(LotLocation location, VehicleSpec supportedVehiclesSpec) {
       Validators.assertArgIsNotNull(location);
@@ -19,16 +30,27 @@ public class ParkingLot {
 
     public void parkVehicle(VehicleId vehicleId, VehicleType vehicleType){
         if(!this.supportedVehiclesSpec.isSatisfiedBy(vehicleType)){
-           //TODO consider exception for this case
            throw new IllegalArgumentException(String.format("%s is not supported by %s", vehicleType, supportedVehiclesSpec));
         }
 
-        if(isFree()){
-          this.parkedVehicle = vehicleId;
-        } else {
-           //TODO consider exception for this case
-           throw new IllegalStateException(String.format("%s is already reserved by vehicle %s", this, vehicleId));
+        /**
+         * state violation exceptions have different meaning in comparing with non-concurrent solution,
+         * here it indicates not api misuse but race conditions under concurrent modifications, so might be handled differently:
+         * find another lot if this became busy.
+         */
+
+        write.lock();
+        try{
+            if(isFree()){
+                this.parkedVehicle = vehicleId;
+            } else {
+               throw new IllegalStateException(String.format("%s is already reserved by vehicle %s", this, vehicleId));
+            }
+        }finally {
+            write.unlock();
         }
+
+
     }
 
     public boolean supports(VehicleType vehicleType){
@@ -36,20 +58,38 @@ public class ParkingLot {
     }
 
     public boolean isFree(){
-      return parkedVehicle == null;
+        read.lock();
+        try {
+            return parkedVehicle == null;
+        }finally {
+          read.unlock();
+        }
     }
 
     public VehicleId getParkedVehicle() {
-      return parkedVehicle;
+       read.lock();
+        try {
+            return parkedVehicle;
+        }finally {
+          read.unlock();
+        }
+
     }
 
     public void release(VehicleId vehicleId) {
-        if(!isFree()){
-          if( this.parkedVehicle.equals(vehicleId) ){
-              this.parkedVehicle = null;
-          } else {
-              throw new IllegalArgumentException(String.format("%s is not parked on %s", vehicleId, location));
-          }
+        write.lock();
+        try {
+            if(!isFree()){
+                if( this.parkedVehicle.equals(vehicleId) ){
+                    this.parkedVehicle = null;
+                } else {
+                    throw new IllegalStateException(String.format("%s is not occupied by %s", vehicleId, location));
+                }
+            }else {
+               throw new IllegalStateException(String.format("%s is free", this));
+            }
+        }finally {
+            write.unlock();
         }
 
     }
