@@ -1,9 +1,9 @@
-package org.home.gg;
+package org.home.gg.application;
 
 
-import org.home.gg.domain.*;
 import org.home.gg.domain.garage.Garage;
 import org.home.gg.domain.garage.ParkingLot;
+import org.home.gg.domain.garage.ParkingLotBuilder;
 import org.home.gg.infrastructure.GarageInMemoryImpl;
 import java.util.HashSet;
 import java.util.Set;

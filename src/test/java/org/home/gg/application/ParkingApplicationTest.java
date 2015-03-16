@@ -1,12 +1,6 @@
-package org.home.gg;
+package org.home.gg.application;
 
-import org.home.gg.application.ParkingApplication;
-import org.home.gg.application.ParkingLotNotFoundException;
-import org.home.gg.application.VehicleIsAlreadyParkedException;
-import org.home.gg.domain.*;
-import org.home.gg.domain.garage.AvailableLots;
-import org.home.gg.domain.garage.LotLocation;
-import org.home.gg.domain.garage.VehicleSpec;
+import org.home.gg.domain.garage.*;
 import org.home.gg.domain.vehicle.VehicleId;
 import org.home.gg.domain.vehicle.VehicleType;
 import org.junit.Test;
