@@ -1,8 +1,12 @@
 package org.home.gg.domain.vehicle;
 
 
+import org.home.gg.domain.common.Reject;
 
 
+/**
+ * This value object represents unique vehicle id, for ex. license plate.
+ */
 public class VehicleId {
 
    private static final int MIN_LENGTH = 1;
@@ -12,19 +16,11 @@ public class VehicleId {
 
 
     public VehicleId(String id) {
-       validateNotNull(id);
+       Reject.ifBlank(id);
        validateLength(id);
-       //more validation logic might be here, for ex. not blank, starts/ends with whitespace etc.
-       //The basic idea is to restrict generic String type to some domain specific value.
        this.id = id;
     }
 
-
-    private static void validateNotNull(String id){
-         if(id == null){
-            throw new IllegalArgumentException("id is null");
-         }
-    }
 
     private static void validateLength(String id){
        int length = id.length();

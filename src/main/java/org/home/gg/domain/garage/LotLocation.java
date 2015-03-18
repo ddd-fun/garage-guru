@@ -1,13 +1,16 @@
 package org.home.gg.domain.garage;
 
 
+import org.home.gg.domain.common.Reject;
+
 public class LotLocation {
 
     private final String level;
     private final String place;
 
     public LotLocation(String level, String place) {
-        //TODO validate input
+        Reject.ifBlank(level);
+        Reject.ifBlank(place);
         this.level = level;
         this.place = place;
     }

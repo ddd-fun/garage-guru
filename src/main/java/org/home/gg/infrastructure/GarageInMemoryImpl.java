@@ -1,6 +1,7 @@
 package org.home.gg.infrastructure;
 
 
+import org.home.gg.domain.common.Reject;
 import org.home.gg.domain.garage.AvailableLots;
 import org.home.gg.domain.garage.Garage;
 import org.home.gg.domain.garage.ParkingLot;
@@ -22,6 +23,7 @@ public class GarageInMemoryImpl implements Garage {
 
 
     public GarageInMemoryImpl(Set<ParkingLot> parkingLotSet) {
+      Reject.ifNull(parkingLotSet);
       this.parkingLotSet = new HashSet<>(parkingLotSet);
     }
 

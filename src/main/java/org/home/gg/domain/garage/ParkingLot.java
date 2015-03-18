@@ -5,11 +5,18 @@ import org.home.gg.domain.common.Reject;
 import org.home.gg.domain.vehicle.VehicleId;
 import org.home.gg.domain.vehicle.VehicleType;
 
+
+/**
+ * This entity and aggregate represents parking lot concept which uniquely identified by its LotLocation.
+ * The lot could be in two states: free and occupied, when lot is occupied then vehicle id is kept.
+ * The vehicle specification is responsible for matching vehicles types which could be parked on this lot.
+ */
 public class ParkingLot {
 
     private final LotLocation location;
     private final VehicleSpec supportedVehiclesSpec;
     private VehicleId parkedVehicle;
+
 
     public ParkingLot(LotLocation location, VehicleSpec supportedVehiclesSpec) {
       Reject.ifNull(location);
@@ -21,15 +28,13 @@ public class ParkingLot {
 
     public void parkVehicle(VehicleId vehicleId, VehicleType vehicleType){
         if(!this.supportedVehiclesSpec.isSatisfiedBy(vehicleType)){
-           //TODO consider exception for this case
            throw new IllegalArgumentException(String.format("%s is not supported by %s", vehicleType, supportedVehiclesSpec));
         }
 
         if(isFree()){
           this.parkedVehicle = vehicleId;
         } else {
-           //TODO consider exception for this case
-           throw new IllegalStateException(String.format("%s is already reserved by vehicle %s", this, vehicleId));
+          throw new IllegalStateException(String.format("%s is already reserved by vehicle %s", this, vehicleId));
         }
     }
 
