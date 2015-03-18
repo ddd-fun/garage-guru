@@ -28,13 +28,13 @@ public class ParkingLot {
 
     public void parkVehicle(VehicleId vehicleId, VehicleType vehicleType){
         if(!this.supportedVehiclesSpec.isSatisfiedBy(vehicleType)){
-           throw new IllegalArgumentException(String.format("%s is not supported by %s", vehicleType, supportedVehiclesSpec));
+           throw new IllegalArgumentException(String.format("%s not acceptable vehicle", vehicleType));
         }
 
         if(isFree()){
           this.parkedVehicle = vehicleId;
         } else {
-          throw new IllegalStateException(String.format("%s is already reserved by vehicle %s", this, vehicleId));
+          throw new IllegalStateException(String.format("%s is already taken by vehicle %s", this, vehicleId));
         }
     }
 
