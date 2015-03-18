@@ -43,6 +43,18 @@ public class TypeBasedVehicleSpecTest {
         assertTrue(spec.isSatisfiedBy(VehicleType.CAR));
     }
 
+    @Test
+    public void toStringShouldContainsAllTypes(){
+
+        VehicleSpec spec = new TypeBasedVehicleSpec(EnumSet.of(VehicleType.CAR, VehicleType.MOTORBIKE));
+
+        String asString = spec.toString();
+
+        assertTrue("contains CAR type", asString.contains(VehicleType.CAR.name()));
+
+        assertTrue("contains MOTORBIKE type", asString.contains(VehicleType.MOTORBIKE.name()));
+    }
+
 
 
 }
