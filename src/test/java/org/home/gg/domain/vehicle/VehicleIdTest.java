@@ -10,7 +10,7 @@ public class VehicleIdTest {
     public static final String[] NOT_VALID_IDS = new String[]{""};
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void nullIsNotAccepted(){
        new VehicleId(null);
     }

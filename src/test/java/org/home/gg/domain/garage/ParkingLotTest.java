@@ -37,29 +37,28 @@ public class ParkingLotTest {
 
 
     @Test
-    public void whenVehicleIsParkedThenParkingLotIsNotFree(){
+    public void whenVehicleIsParkedThenParkingLotIsTaken(){
 
         ParkingLot parkingLot = aFreeParkingLot().build();
 
         VehicleId vehicleId = new VehicleId("AB213H");
 
-        //I want to keep test flexible, so testing only parking lot but not specification logic
         parkingLot.parkVehicle(vehicleId, VehicleType.CAR);
 
-        assertFalse(parkingLot.isFree());
+        assertTrue(parkingLot.isTakenBy(vehicleId));
 
-        assertEquals("correct vehicle id is returned", vehicleId, parkingLot.getParkedVehicle());
+        assertFalse("vehicle should be properly identified", parkingLot.isTakenBy(new VehicleId("A789JK")));
     }
 
     @Test
-    public void whenParkingLotIsReleasedThenItIsFree(){
+    public void whenParkingLotIsCleanedThenItIsFree(){
 
         ParkingLot parkingLot = aFreeParkingLot().build();
 
         VehicleId vehicleId = new VehicleId("AB123H");
         parkingLot.parkVehicle(vehicleId, VehicleType.CAR);
 
-        parkingLot.release(vehicleId);
+        parkingLot.clean(vehicleId);
 
         assertTrue(parkingLot.isFree());
     }

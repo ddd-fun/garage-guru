@@ -8,7 +8,7 @@ import org.home.gg.domain.vehicle.VehicleType;
 
 /**
  * This entity and aggregate represents parking lot concept which uniquely identified by its LotLocation.
- * The lot could be in two states: free and occupied, when lot is occupied then vehicle id is kept.
+ * The lot could be in two states: free and taken, when lot is taken then vehicle id is kept.
  * The vehicle specification is responsible for matching vehicles types which could be parked on this lot.
  */
 public class ParkingLot {
@@ -46,11 +46,17 @@ public class ParkingLot {
       return parkedVehicle == null;
     }
 
-    public VehicleId getParkedVehicle() {
-      return parkedVehicle;
+    private boolean isTaken(){
+     return !isFree();
     }
 
-    public void release(VehicleId vehicleId) {
+
+    public boolean isTakenBy(VehicleId vehicleId){
+       return isTaken() && this.parkedVehicle.equals(vehicleId);
+    }
+
+
+    public void clean(VehicleId vehicleId) {
         if(!isFree()){
           if( this.parkedVehicle.equals(vehicleId) ){
               this.parkedVehicle = null;

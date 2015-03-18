@@ -68,7 +68,7 @@ public class ParkingApplicationTest {
 
 
     @Test
-    public void whenParkingLotIsReleasedThenItIsFree() throws Exception {
+    public void whenParkingLotIsCleanedThenItIsFree() throws Exception {
 
         ParkingApplication application =
                 aParkingAppWith(aGarage().with(aParkingLot().with(new LotLocation("A", "1"))
@@ -80,7 +80,7 @@ public class ParkingApplicationTest {
 
         AvailableLots beforeRealized = application.getAvailableLots();
 
-        application.releaseParkingLot(vehicleId);
+        application.cleanParkingLot(vehicleId);
 
         assertFalse(application.findParkedVehicleBy(vehicleId).isPresent());
 

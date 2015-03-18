@@ -47,7 +47,7 @@ public class GarageInMemoryImpl implements Garage {
 
     @Override
     public Optional<ParkingLot> findParkedVehicle(VehicleId vehicleId) {
-      return streamLots().filter((ParkingLot lot)-> !lot.isFree() && lot.getParkedVehicle().equals(vehicleId)).findFirst();
+      return streamLots().filter((ParkingLot lot)-> lot.isTakenBy(vehicleId)).findFirst();
     }
 
 }

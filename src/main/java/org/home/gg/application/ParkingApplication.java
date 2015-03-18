@@ -30,13 +30,13 @@ public class ParkingApplication {
       return parkingLot.getLocation();
     }
 
-    public void releaseParkingLot(VehicleId vehicleId){
+    public void cleanParkingLot(VehicleId vehicleId){
 
         Optional<ParkingLot> maybeParkingLot = this.garage.findParkedVehicle(vehicleId);
 
         if(maybeParkingLot.isPresent()){
             ParkingLot lot = maybeParkingLot.get();
-            lot.release(vehicleId);
+            lot.clean(vehicleId);
         }else{
            throw new ParkingLotNotFoundException(String.format("parking lot occupied by %s is not found", vehicleId));
         }
