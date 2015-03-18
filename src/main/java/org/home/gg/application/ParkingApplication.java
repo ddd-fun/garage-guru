@@ -38,7 +38,7 @@ public class ParkingApplication {
             ParkingLot lot = maybeParkingLot.get();
             lot.clean(vehicleId);
         }else{
-           throw new ParkingLotNotFoundException(String.format("parking lot occupied by %s is not found", vehicleId));
+           throw new ParkingLotNotFoundException(String.format("parking lot taken by %s is not found", vehicleId));
         }
     }
 
