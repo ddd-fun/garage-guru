@@ -1,7 +1,7 @@
 package org.home.gg.domain.garage;
 
 
-import org.home.gg.domain.common.Validators;
+import org.home.gg.domain.common.Reject;
 import org.home.gg.domain.vehicle.VehicleId;
 import org.home.gg.domain.vehicle.VehicleType;
 
@@ -12,8 +12,8 @@ public class ParkingLot {
     private VehicleId parkedVehicle;
 
     public ParkingLot(LotLocation location, VehicleSpec supportedVehiclesSpec) {
-      Validators.assertArgIsNotNull(location);
-      Validators.assertArgIsNotNull(supportedVehiclesSpec);
+      Reject.ifNull(location);
+      Reject.ifNull(supportedVehiclesSpec);
       this.location = location;
       this.supportedVehiclesSpec = supportedVehiclesSpec;
     }

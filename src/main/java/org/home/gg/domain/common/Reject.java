@@ -1,17 +1,17 @@
 package org.home.gg.domain.common;
 
 
-public class Validators {
+public class Reject {
 
-    private Validators() {
+    private Reject() {
     }
 
-    public static void assertArgIsNotNull(Object object){
+    public static void ifNull(Object object){
         if(object == null)
             throw new NullPointerException();
     }
 
-    public static void assertArgIsNotBlank(String str){
+    public static void ifBlank(String str){
         if(str == null)
             throw new NullPointerException();
         if(str.trim().length() == 0)
