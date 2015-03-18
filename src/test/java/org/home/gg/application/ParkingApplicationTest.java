@@ -22,7 +22,7 @@ public class ParkingApplicationTest {
 
         havingCarParked(vehicleId, application);
 
-        assertTrue("no available lots", application.getAvailableLots().isEmpty());
+        assertTrue("no available lots", application.getAvailableLots().isNoLots());
     }
 
 
@@ -78,13 +78,13 @@ public class ParkingApplicationTest {
 
         havingCarParked(vehicleId, application);
 
-        AvailableLots beforeRealized = application.getAvailableLots();
+        NumberOfFreeLots beforeRealized = application.getAvailableLots();
 
         application.cleanParkingLot(vehicleId);
 
         assertFalse(application.findParkedVehicleBy(vehicleId).isPresent());
 
-        AvailableLots afterRealised = application.getAvailableLots();
+        NumberOfFreeLots afterRealised = application.getAvailableLots();
 
         //TODO introduce less than
         assertTrue(beforeRealized.totalLots() < afterRealised.totalLots());

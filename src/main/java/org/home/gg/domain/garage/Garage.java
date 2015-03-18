@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface Garage {
 
-    AvailableLots getAvailableLots();
+    NumberOfFreeLots getNumberOfFreeLots();
 
     Optional<ParkingLot> findSuitableLotFor(VehicleType vehicle);
 

@@ -2,10 +2,9 @@ package org.home.gg.infrastructure;
 
 
 import org.home.gg.domain.common.Reject;
-import org.home.gg.domain.garage.AvailableLots;
+import org.home.gg.domain.garage.NumberOfFreeLots;
 import org.home.gg.domain.garage.Garage;
 import org.home.gg.domain.garage.ParkingLot;
-import org.home.gg.domain.garage.VehicleSpec;
 import org.home.gg.domain.vehicle.VehicleId;
 import org.home.gg.domain.vehicle.VehicleType;
 
@@ -34,9 +33,10 @@ public class GarageInMemoryImpl implements Garage {
 
 
     @Override
-    public AvailableLots getAvailableLots() {
-        Map<VehicleSpec, Long> map = streamLots().filter(ParkingLot::isFree).collect( groupingBy(ParkingLot::getVehiclesSpec, counting()) );
-      return new AvailableLots(map);
+    public NumberOfFreeLots getNumberOfFreeLots() {
+        Map<String, Long> map = streamLots().filter(ParkingLot::isFree)
+                .collect(groupingBy((ParkingLot aLot) -> aLot.getVehiclesSpec().toString(), counting()));
+      return new NumberOfFreeLots(map);
     }
 
 

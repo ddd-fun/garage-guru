@@ -1,7 +1,7 @@
 package org.home.gg.application;
 
 
-import org.home.gg.domain.garage.AvailableLots;
+import org.home.gg.domain.garage.NumberOfFreeLots;
 import org.home.gg.domain.garage.Garage;
 import org.home.gg.domain.garage.LotLocation;
 import org.home.gg.domain.garage.ParkingLot;
@@ -71,8 +71,8 @@ public class ParkingApplication {
     }
 
 
-    public AvailableLots getAvailableLots(){
-       return this.garage.getAvailableLots();
+    public NumberOfFreeLots getAvailableLots(){
+       return this.garage.getNumberOfFreeLots();
     }
 
 
