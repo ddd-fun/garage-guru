@@ -2,6 +2,7 @@ package org.home.gg.interfaces;
 
 import org.home.gg.application.ParkingApplication;
 import org.home.gg.domain.garage.*;
+import org.home.gg.domain.vehicle.VehicleId;
 import org.home.gg.domain.vehicle.VehicleType;
 import org.home.gg.infrastructure.GarageInMemoryImpl;
 
@@ -10,6 +11,7 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -43,6 +45,12 @@ public class GarageGuruDesktop {
     private static final ParkingApplication application =
             singleThreadedAppBuilder.compose(inMemoryGarageBuilder).apply(twoLevelGarageConfiguration);
 
+    // ------- application functions -------------------
+
+    static BiFunction<Supplier<VehicleId>, Supplier<VehicleType>,  LotLocation> parkFunction =
+            (Supplier<VehicleId> id, Supplier<VehicleType> type) -> application.tryToPark(id.get(), type.get());
+
+
 
     public static void main(String[] args) {
 
@@ -61,27 +69,23 @@ public class GarageGuruDesktop {
 
     private static void processCommand(String commandLine){
         if(commandLine.startsWith("exit")){
-          exit();
+           consolePrinter.accept(()-> "Good bye...");
+           System.exit(1);
         }
 
         if(commandLine.startsWith("free")){
-          printFreeLots();
+           consolePrinter.accept(application::getAvailableLots);
+        }
+
+        if(commandLine.startsWith("park")){
+           final String[] commands =  commandLine.split(" ");
+           consolePrinter.accept(() -> parkFunction.apply( ()-> new VehicleId(commands[1]), ()-> VehicleType.valueOf(commands[2])) );
         }
 
     }
 
 
-    private static void printFreeLots(){
-       NumberOfFreeLots lots = application.getAvailableLots();
-       System.out.println(lots);
-    }
-
-
-
-    private static void exit(){
-        System.out.println("Good bye...");
-       System.exit(1);
-    }
+    private static final Consumer<Supplier> consolePrinter = (Supplier s) -> System.out.println(s.get());
 
 
 
