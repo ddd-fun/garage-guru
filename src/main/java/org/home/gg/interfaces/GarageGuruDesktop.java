@@ -44,9 +44,14 @@ public class GarageGuruDesktop {
 
     // ------- application functions -------------------
 
-    static BiFunction<Supplier<VehicleId>, Supplier<VehicleType>,  LotLocation> parkFunction =
+    static final  BiFunction<Supplier<VehicleId>, Supplier<VehicleType>,  LotLocation> parkFunction =
             (Supplier<VehicleId> id, Supplier<VehicleType> type) -> application.tryToPark(id.get(), type.get());
 
+    static final Consumer<VehicleId> cleanFunction = application::cleanParkingLot;
+
+    static final Function<VehicleId, Optional<LotLocation>> finVehicleFunction = application::findParkedVehicleBy;
+
+    static final Supplier<NumberOfFreeLots> getNumberOfFreeLotFunction = application::getAvailableLots;
 
 
     public static void main(String[] args) {
@@ -66,23 +71,39 @@ public class GarageGuruDesktop {
 
     private static void processCommand(String commandLine){
         if(commandLine.startsWith("exit")){
-           consolePrinter.accept(()-> "Good bye...");
+           consolePrinter.accept( "Good bye...");
            System.exit(1);
         }
 
         if(commandLine.startsWith("free")){
-           consolePrinter.accept(application::getAvailableLots);
+           consolePrinter.accept(getNumberOfFreeLotFunction);
         }
 
         if(commandLine.startsWith("park")){
            final String[] commands =  commandLine.split(" ");
-           consolePrinter.accept(() -> parkFunction.apply( ()-> new VehicleId(commands[1]), ()-> VehicleType.valueOf(commands[2])) );
+           consolePrinter.accept( parkFunction.apply( ()-> new VehicleId(commands[1]), ()-> VehicleType.valueOf(commands[2])) );
+        }
+
+        if(commandLine.startsWith("clean")){
+            final String[] commands =  commandLine.split(" ");
+            cleanFunction.accept(new VehicleId(commands[1]));
+            consolePrinter.accept("cleaned" );
+        }
+
+        if(commandLine.startsWith("find")){
+            final String[] commands =  commandLine.split(" ");
+            Optional<LotLocation> maybeLot = finVehicleFunction.apply(new VehicleId(commands[1]));
+            if(maybeLot.isPresent()){
+              consolePrinter.accept(maybeLot.get());
+            } else {
+              consolePrinter.accept(String.format("vehicle %s not found", commands[1]));
+            }
         }
 
     }
 
 
-    private static final Consumer<Supplier> consolePrinter = (Supplier s) -> System.out.println(s.get());
+    private static final Consumer<Object> consolePrinter = System.out::println;
 
 
 
