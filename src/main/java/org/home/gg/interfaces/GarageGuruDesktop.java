@@ -44,8 +44,7 @@ public class GarageGuruDesktop {
 
     // ------- application functions -------------------
 
-    static final  BiFunction<Supplier<VehicleId>, Supplier<VehicleType>,  LotLocation> parkFunction =
-            (Supplier<VehicleId> id, Supplier<VehicleType> type) -> application.tryToPark(id.get(), type.get());
+    static final BiFunction<VehicleId, VehicleType,  LotLocation> parkFunction = application::tryToPark;
 
     static final Consumer<VehicleId> cleanFunction = application::cleanParkingLot;
 
@@ -76,12 +75,12 @@ public class GarageGuruDesktop {
         }
 
         if(commandLine.startsWith("free")){
-           consolePrinter.accept(getNumberOfFreeLotFunction);
+           consolePrinter.accept(getNumberOfFreeLotFunction.get());
         }
 
         if(commandLine.startsWith("park")){
            final String[] commands =  commandLine.split(" ");
-           consolePrinter.accept( parkFunction.apply( ()-> new VehicleId(commands[1]), ()-> VehicleType.valueOf(commands[2])) );
+           consolePrinter.accept( parkFunction.apply( new VehicleId(commands[1]), VehicleType.valueOf(commands[2])) );
         }
 
         if(commandLine.startsWith("clean")){
