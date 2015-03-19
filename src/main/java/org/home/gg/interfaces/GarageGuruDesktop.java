@@ -6,10 +6,7 @@ import org.home.gg.domain.vehicle.VehicleId;
 import org.home.gg.domain.vehicle.VehicleType;
 import org.home.gg.infrastructure.GarageInMemoryImpl;
 
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -28,7 +25,7 @@ public class GarageGuruDesktop {
         BiFunction<LotLocation, EnumSet, ParkingLot> lotBuilder = (LotLocation lotLocation, EnumSet supportedTypes)
                 -> new ParkingLot(lotLocation, new TypeBasedVehicleSpec(supportedTypes));
 
-        Set<ParkingLot> lotSet = new HashSet<>();
+        Set<ParkingLot> lotSet = new LinkedHashSet<>();
         //first level for CAR
         lotSet.add(lotBuilder.apply(new LotLocation("A", "1"), EnumSet.of(VehicleType.CAR)));
         lotSet.add(lotBuilder.apply(new LotLocation("A", "2"), EnumSet.of(VehicleType.CAR)));
