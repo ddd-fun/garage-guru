@@ -55,7 +55,7 @@ public class GarageGuruDesktop {
 
     public static void main(String[] args) {
 
-        System.out.println(getWelcomeMessage());
+        consolePrinter.accept(getWelcomeMessage());
 
         Scanner scan = new Scanner(System.in);
         do{
