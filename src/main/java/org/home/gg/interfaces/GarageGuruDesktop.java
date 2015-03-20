@@ -42,7 +42,7 @@ public class GarageGuruDesktop {
     private static final ParkingApplication application =
             singleThreadedAppBuilder.compose(inMemoryGarageBuilder).apply(twoLevelGarageConfiguration);
 
-    // ------- application functions -------------------
+    // ------- just for fun let use functions -------------------
 
     static final BiFunction<VehicleId, VehicleType,  LotLocation> parkFunction = application::tryToPark;
 
@@ -52,28 +52,10 @@ public class GarageGuruDesktop {
 
     static final Supplier<NumberOfFreeLots> getNumberOfFreeLotFunction = application::getAvailableLots;
 
-    static final Function<String, VehicleType> vehicleTypeReader = (String s)-> {
-
-        if(s == null || s.trim().length() == 0){
-            throw new IllegalArgumentException("vehicle type is null");
-        }
-
-        Optional<String> maybeType = Arrays.asList(VehicleType.values()).stream()
-                .map(VehicleType::name).map(String::toUpperCase).filter((String type) -> type.startsWith(s.toUpperCase())).findFirst();
-
-        if(maybeType.isPresent()){
-            return VehicleType.valueOf(maybeType.get());
-        }else{
-            throw new IllegalArgumentException(String.format("%s is unknown vehicle type", s));
-        }
-
-    };
-
-
 
     public static void main(String[] args) {
 
-        System.out.println("Enter a command: park, clean, find, free, exit");
+        System.out.println(getWelcomeMessage());
 
         Scanner scan = new Scanner(System.in);
         do{
@@ -94,30 +76,70 @@ public class GarageGuruDesktop {
 
         if(commandLine.startsWith("free")){
            consolePrinter.accept(getNumberOfFreeLotFunction.get());
+          return;
         }
 
+        final String commands[]  =  commandLine.split(" ");
+
         if(commandLine.startsWith("park")){
-           final String[] commands =  commandLine.split(" ");
-           consolePrinter.accept( parkFunction.apply( new VehicleId(commands[1]), vehicleTypeReader.apply(commands[2])) );
+          consolePrinter.accept(String.format("your vehicle parked on %s",  parkFunction.apply( new VehicleId(commands[1]), vehicleTypeReader.apply(commands[2])) ) );
+         return;
         }
 
         if(commandLine.startsWith("clean")){
-            final String[] commands =  commandLine.split(" ");
             cleanFunction.accept(new VehicleId(commands[1]));
             consolePrinter.accept("cleaned" );
+           return;
         }
 
         if(commandLine.startsWith("find")){
-            final String[] commands =  commandLine.split(" ");
             Optional<LotLocation> maybeLot = finVehicleFunction.apply(new VehicleId(commands[1]));
             if(maybeLot.isPresent()){
               consolePrinter.accept(maybeLot.get());
             } else {
               consolePrinter.accept(String.format("vehicle %s not found", commands[1]));
             }
+          return;
         }
 
+        System.err.println(String.format("Unknown command %s", commandLine));
     }
+
+
+    private static String getWelcomeMessage() {
+        StringBuilder builder = new StringBuilder("Welcome to GarageGuru command line. Please, enter a command:");
+        builder.append("\n");
+        builder.append("- for getting number of available lots, type: free");
+        builder.append("\n");
+        builder.append("- for parking your vehicle, type: park <vehicle id> <vehicle type>, for ex. park AH895JK CAR");
+        builder.append("\n");
+        builder.append("- for find your vehicle, type: find <vehicle id>, for ex. find AH895JK");
+        builder.append("\n");
+        builder.append("- for cleaning parking lot, type: clean <vehicle id>, for ex. clean AH895JK");
+        builder.append("\n");
+        builder.append("- if you get annoyed, type: exit");
+        builder.append("\n");
+        builder.append("---------------------------------------------------------------------------");
+       return builder.toString();
+    }
+
+
+    private static final Function<String, VehicleType> vehicleTypeReader = (String s)-> {
+
+        if(s == null || s.trim().length() == 0){
+            throw new IllegalArgumentException("vehicle type is null");
+        }
+
+        Optional<String> maybeType = Arrays.asList(VehicleType.values()).stream()
+                .map(VehicleType::name).map(String::toUpperCase).filter((String type) -> type.startsWith(s.toUpperCase())).findFirst();
+
+        if(maybeType.isPresent()){
+            return VehicleType.valueOf(maybeType.get());
+        }else{
+            throw new IllegalArgumentException(String.format("%s is unknown vehicle type", s));
+        }
+
+    };
 
 
     private static final Consumer<Object> consolePrinter = System.out::println;
