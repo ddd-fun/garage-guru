@@ -38,8 +38,8 @@ public class ParkingLot {
         }
     }
 
-    public boolean supports(VehicleType vehicleType){
-      return this.supportedVehiclesSpec.isSatisfiedBy(vehicleType);
+    public boolean couldParkVehicle(VehicleType vehicleType){
+      return isFree() && this.supportedVehiclesSpec.isSatisfiedBy(vehicleType);
     }
 
     public boolean isFree(){
