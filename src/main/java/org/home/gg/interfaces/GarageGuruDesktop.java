@@ -52,6 +52,24 @@ public class GarageGuruDesktop {
 
     static final Supplier<NumberOfFreeLots> getNumberOfFreeLotFunction = application::getAvailableLots;
 
+    static final Function<String, VehicleType> vehicleTypeReader = (String s)-> {
+
+        if(s == null || s.trim().length() == 0){
+            throw new IllegalArgumentException("vehicle type is null");
+        }
+
+        Optional<String> maybeType = Arrays.asList(VehicleType.values()).stream()
+                .map(VehicleType::name).map(String::toUpperCase).filter((String type) -> type.startsWith(s.toUpperCase())).findFirst();
+
+        if(maybeType.isPresent()){
+            return VehicleType.valueOf(maybeType.get());
+        }else{
+            throw new IllegalArgumentException(String.format("%s is unknown vehicle type", s));
+        }
+
+    };
+
+
 
     public static void main(String[] args) {
 
@@ -80,7 +98,7 @@ public class GarageGuruDesktop {
 
         if(commandLine.startsWith("park")){
            final String[] commands =  commandLine.split(" ");
-           consolePrinter.accept( parkFunction.apply( new VehicleId(commands[1]), VehicleType.valueOf(commands[2])) );
+           consolePrinter.accept( parkFunction.apply( new VehicleId(commands[1]), vehicleTypeReader.apply(commands[2])) );
         }
 
         if(commandLine.startsWith("clean")){
