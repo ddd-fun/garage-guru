@@ -57,14 +57,11 @@ public class ParkingLot {
 
 
     public void clean(VehicleId vehicleId) {
-        if(!isFree()){
-          if( this.parkedVehicle.equals(vehicleId) ){
-              this.parkedVehicle = null;
-          } else {
-              throw new IllegalArgumentException(String.format("%s is not parked on %s", vehicleId, location));
-          }
+        if(isTakenBy(vehicleId)){
+           this.parkedVehicle = null;
+        }else{
+          throw new IllegalArgumentException(String.format("%s is not parked on %s", vehicleId, location));
         }
-
     }
 
     public LotLocation getLocation() {

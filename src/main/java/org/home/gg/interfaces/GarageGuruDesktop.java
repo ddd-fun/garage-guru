@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 public class GarageGuruDesktop {
 
 
-    //I assume this is probably not a clean functional style, but just exercise to get use to java functional interfaces.
+    //I assume this is probably not a clean functional style, but just exercise to get used to java functional interfaces.
 
     private static final Function<Garage, ParkingApplication> singleThreadedAppBuilder = ParkingApplication::new;
 

@@ -30,7 +30,7 @@ public class ParkingApplication {
       return parkingLot.getLocation();
     }
 
-    public void cleanParkingLot(VehicleId vehicleId){
+    public void cleanParkingLot(VehicleId vehicleId) throws ParkingLotNotFoundException{
 
         Optional<ParkingLot> maybeParkingLot = this.garage.findParkedVehicle(vehicleId);
 
@@ -44,7 +44,7 @@ public class ParkingApplication {
 
 
 
-    private ParkingLot getSuitableParkingLot(VehicleType vehicle){
+    private ParkingLot getSuitableParkingLot(VehicleType vehicle) throws ParkingLotNotFoundException{
         Optional<ParkingLot> maybeParkingLot = this.garage.findSuitableLotFor(vehicle);
         if(maybeParkingLot.isPresent()){
            return maybeParkingLot.get();
