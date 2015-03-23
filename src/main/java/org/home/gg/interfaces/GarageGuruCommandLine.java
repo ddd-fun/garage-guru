@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class GarageGuruDesktop {
+public class GarageGuruCommandLine {
 
 
     //I assume this is probably not a clean functional style, but just exercise to get used to java functional interfaces.
@@ -109,7 +109,7 @@ public class GarageGuruDesktop {
 
 
     private static String getWelcomeMessage() {
-        StringBuilder builder = new StringBuilder("Welcome to GarageGuru command line. Please, enter a command:");
+        StringBuilder builder = new StringBuilder("Welcome to Garage Guru command line. Please, enter a command:");
         builder.append("\n");
         builder.append("- for getting number of available lots, type: free");
         builder.append("\n");
