@@ -17,12 +17,31 @@ public class ParkingApplicationTest {
                 aParkingAppWith(aGarage().with(aParkingLot().with(new LotLocation("A", "1"))
                                                             .with(vehicleSpecSuitableForAnyTypes())));
 
-        //TODO for test maintainability relay on valid value generators
         VehicleId vehicleId = new VehicleId("AB465KL");
 
-        havingCarParked(vehicleId, application);
+        LotLocation lotLocation = application.tryToPark(vehicleId, VehicleType.CAR);
 
-        assertTrue("no available lots", application.getAvailableLots().isNoLots());
+        assertTrue("vehicle is found", application.findParkedVehicleBy(vehicleId).isPresent());
+
+        assertEquals("location is correct", lotLocation, application.findParkedVehicleBy(vehicleId).get());
+    }
+
+    @Test
+    public void whenVehicleIsParkedThenCorrectNumberOfFreeLotsIsReturned() throws Exception {
+
+        ParkingApplication application =
+                aParkingAppWith(aGarage().with(aParkingLot().with(new LotLocation("A", "1"))
+                                                            .with((vehicleSpecSuitableForAnyTypes()))));
+
+        NumberOfFreeLots beforeCarWasParked = application.getAvailableLots();
+
+        havingCarParked(new VehicleId("A123"), application);
+
+        NumberOfFreeLots afterCarWasParked = application.getAvailableLots();
+
+        assertTrue("number of free lots is decreased", beforeCarWasParked.totalLots() > afterCarWasParked.totalLots());
+
+        assertEquals("number of free lots is decreased by 1", 1, beforeCarWasParked.totalLots() - afterCarWasParked.totalLots());
     }
 
 
@@ -68,7 +87,7 @@ public class ParkingApplicationTest {
 
 
     @Test
-    public void whenParkingLotIsCleanedThenItIsFree() throws Exception {
+    public void whenParkingLotIsCleanedThenVehicleIsNotParkedAnymore() throws Exception {
 
         ParkingApplication application =
                 aParkingAppWith(aGarage().with(aParkingLot().with(new LotLocation("A", "1"))
@@ -78,16 +97,9 @@ public class ParkingApplicationTest {
 
         havingCarParked(vehicleId, application);
 
-        NumberOfFreeLots beforeRealized = application.getAvailableLots();
-
         application.cleanParkingLot(vehicleId);
 
         assertFalse(application.findParkedVehicleBy(vehicleId).isPresent());
-
-        NumberOfFreeLots afterRealised = application.getAvailableLots();
-
-        //TODO introduce less than
-        assertTrue(beforeRealized.totalLots() < afterRealised.totalLots());
 
     }
 
