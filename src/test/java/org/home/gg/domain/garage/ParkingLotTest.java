@@ -60,7 +60,8 @@ public class ParkingLotTest {
 
         parkingLot.clean(vehicleId);
 
-        assertTrue(parkingLot.isFree());
+        assertTrue("lot is free", parkingLot.isFree());
+        assertFalse("lot is not taken by vehicle", parkingLot.isTakenBy(vehicleId));
     }
 
 
